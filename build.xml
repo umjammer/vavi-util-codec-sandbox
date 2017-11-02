@@ -5,14 +5,14 @@
 <!--                                                                        -->
 <!-- Written by Naohide Sano                                                -->
 <!--                                                                        -->
-<!-- vavi-commons-codec-sandbox                                             -->
+<!-- vavi-util-codec-sandbox                                                -->
 <!--                                                                        -->
 <!-- @author Naohide Sano                                                   -->
 <!-- @version 0.00 031001 nsano initial version                             -->
 <!--                                                                        -->
 <!-- ////////////////////////////////////////////////////////////////////// -->
 
-<project name="vavi-commons-codec-sandbox" default="test" basedir="."
+<project name="vavi-util-codec-sandbox" default="test" basedir="."
   xmlns:artifact="urn:maven-artifact-ant">
 
   <path id="maven-ant-tasks.classpath">

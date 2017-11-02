@@ -1,4 +1,4 @@
-[![Release](https://jitpack.io/v/umjammer/vavi-commons-codec-sandbox.svg)](https://jitpack.io/#umjammer/vavi-commons-codec-sandbox)
+[![Release](https://jitpack.io/v/umjammer/vavi-util-codec-sandbox.svg)](https://jitpack.io/#umjammer/vavi-util-codec-sandbox)
 
 # vavi-commons-codec-sandbox
 
