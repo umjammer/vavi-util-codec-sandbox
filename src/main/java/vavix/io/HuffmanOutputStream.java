@@ -171,7 +171,7 @@ public class HuffmanOutputStream extends FilterOutputStream {
         super(_out);
         bits = b;
         bos = new BitOutputStream(out);
-        table = new HashMap<Integer, Node>(257);
+        table = new HashMap<>(257);
         rootNode = new Node(null, null, null, 0, 0, 2, 0);
         zeroNode = new Node(rootNode, null, null, 0, 1, 1, 0);
         escapeNode = new Node(rootNode, null, null, 1, 1, 1, 1);

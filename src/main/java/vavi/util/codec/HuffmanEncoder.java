@@ -25,12 +25,12 @@ import java.io.IOException;
  */
 public class HuffmanEncoder {
     /**
-     * ƒnƒtƒ}ƒ“•„†‰»‚·‚é
+     * ãƒãƒ•ãƒãƒ³ç¬¦å·åŒ–ã™ã‚‹
      */
     public byte[] encode(byte[] data) throws IOException {
         int[] freq = new int[256];
 
-        // •p“x”z—ñ
+        // é »åº¦é…åˆ—
         for (int i = 0; i < 256; i++) {
             freq[i] = 0;
         }
@@ -39,7 +39,7 @@ public class HuffmanEncoder {
         }
 
 /*
-// ƒeƒXƒgo—Í
+// ãƒ†ã‚¹ãƒˆå‡ºåŠ›
 for (int i = 0; i < 256; i++) {
  System.out.print(freq[i] + " ");
  if (i % 16 == 15)
@@ -47,19 +47,19 @@ for (int i = 0; i < 256; i++) {
 }
 */
 
-        // ƒnƒtƒ}ƒ“–Ø‚ğì¬
+        // ãƒãƒ•ãƒãƒ³æœ¨ã‚’ä½œæˆ
         int[] parent = new int[512];
         int[] l_node = new int[512];
         int[] r_node = new int[512];
         buildTree(freq, parent, l_node, r_node);
 
 /*
-// ƒeƒXƒgo—Í
+// ãƒ†ã‚¹ãƒˆå‡ºåŠ›
 for (int i = 0; i < 512 - 1; i++)
  System.out.println("[" + i + "] l:" + l_node[i] + " r:" + r_node[i] + " p:" + parent[i]);
 */
 
-        // •„†‚ğì¬
+        // ç¬¦å·ã‚’ä½œæˆ
         int n;
         byte[][] code = new byte[256][];
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -68,7 +68,7 @@ for (int i = 0; i < 512 - 1; i++)
                 continue;
             }
 
-            // ‰Šú‰»
+            // åˆæœŸåŒ–
             n = i;
             baos.reset();
             while (parent[n] != -1) {
@@ -83,14 +83,14 @@ for (int i = 0; i < 512 - 1; i++)
             byte[] rev_code = baos.toByteArray();
             code[i] = new byte[rev_code.length];
 
-            // ”½“]
+            // åè»¢
             for (int j = 0; j < rev_code.length; j++) {
                 code[i][j] = rev_code[rev_code.length - j - 1];
             }
         }
 
 /*
-// ƒeƒXƒgo—Í
+// ãƒ†ã‚¹ãƒˆå‡ºåŠ›
 for (int i = 0; i < 256; i++) {
  System.out.print("["+i+"]:"+freq[i]+" - ");
  if (freq[i] > 0) {
@@ -101,7 +101,7 @@ for (int i = 0; i < 256; i++) {
  System.out.println();
 }
 */
-        // •„†‚ğ“¾‚é
+        // ç¬¦å·ã‚’å¾—ã‚‹
         baos.reset();
 
         for (int i = 0; i < data.length; i++) {
@@ -118,7 +118,7 @@ for (int j = 0; j < code[n].length; j++)
 
         byte[] huff = new byte[(tmp.length / 8) + 1];
         for (int i = 0; i < huff.length; i++) {
-            // •„†‰»ƒoƒCƒg—ñì¬
+            // ç¬¦å·åŒ–ãƒã‚¤ãƒˆåˆ—ä½œæˆ
             huff[i] = 0;
             for (int j = 0; j < 8; j++) {
                 huff[i] <<= 1;
@@ -132,15 +132,15 @@ for (int j = 0; j < code[n].length; j++)
 
         DataOutputStream dos = new DataOutputStream(baos);
 
-        // •„†‰»î•ñ
-        // type 0F
-        //	 ‘S—v‘f‚ÌoŒ»•p“x‚ğintŒ^‚Å‚à‚Â
+        // ç¬¦å·åŒ–æƒ…å ±
+        // type 0ï¼š
+        //	 å…¨è¦ç´ ã®å‡ºç¾é »åº¦ã‚’intå‹ã§ã‚‚ã¤
         //   4[byte] * 256 = 1024[byte]	
-        // type 1F
-        //	 oŒ»•p“x‚ª0‚Å‚È‚¢—v‘f‚¾‚¯‚É‚Â‚¢‚ÄA
-        //   —v‘f”Ô†‚ÆoŒ»•p“xiintŒ^j‚ğ‚à‚Â
+        // type 1ï¼š
+        //	 å‡ºç¾é »åº¦ãŒ0ã§ãªã„è¦ç´ ã ã‘ã«ã¤ã„ã¦ã€
+        //   è¦ç´ ç•ªå·ã¨å‡ºç¾é »åº¦ï¼ˆintå‹ï¼‰ã‚’ã‚‚ã¤
         //   1[byte] + (1+4)[byte] * 256
-        // type 1‚Ìê‡‚Ì•„†‰»î•ñƒf[ƒ^—Ê
+        // type 1ã®å ´åˆã®ç¬¦å·åŒ–æƒ…å ±ãƒ‡ãƒ¼ã‚¿é‡
         n = 0;
         for (int i = 0; i < 256; i++) {
             if (freq[i] != 0) {
@@ -148,7 +148,7 @@ for (int j = 0; j < code[n].length; j++)
             }
         }
 
-        // ƒf[ƒ^‚ª­‚È‚­‚Ä‚·‚Ş•û‚ğ©“®“I‚É‘I‚Ô
+        // ãƒ‡ãƒ¼ã‚¿ãŒå°‘ãªãã¦ã™ã‚€æ–¹ã‚’è‡ªå‹•çš„ã«é¸ã¶
         int type;
         if ((1 + (n * 5)) > (256 * 4)) {
             type = 0;
@@ -158,7 +158,7 @@ for (int j = 0; j < code[n].length; j++)
 
 //System.out.println("type : " + type);
         if (type == 0) {
-            dos.writeByte(0); // •„†î•ñƒ^ƒCƒv
+            dos.writeByte(0); // ç¬¦å·æƒ…å ±ã‚¿ã‚¤ãƒ—
             for (int i = 0; i < 256; i++) {
                 dos.writeInt(freq[i]);
             }
@@ -172,34 +172,34 @@ for (int j = 0; j < code[n].length; j++)
                 }
             }
         } else {
-            throw new IllegalArgumentException("•„†‰»î•ñ”Ô†: " + type);
+            throw new IllegalArgumentException("ç¬¦å·åŒ–æƒ…å ±ç•ªå·: " + type);
         }
 
-        // •¶š”
+        // æ–‡å­—æ•°
         dos.writeInt(data.length);
 
-        // •„†‰»ƒf[ƒ^
+        // ç¬¦å·åŒ–ãƒ‡ãƒ¼ã‚¿
         dos.write(huff, 0, huff.length);
 
         dos.close();
 
         byte[] out = baos.toByteArray();
 
-        // ƒeƒXƒgo—Í
+        // ãƒ†ã‚¹ãƒˆå‡ºåŠ›
         int prep = data.length;
         int postp = out.length;
-System.err.println(prep + " ¨ " + postp + " : " + ((postp * 100) / prep) + "%");
+System.err.println(prep + " â†’ " + postp + " : " + ((postp * 100) / prep) + "%");
 
         return out;
     }
 
     /**
-     * Huffman–Ø‚ğ‚Â‚­‚é
+     * Huffmanæœ¨ã‚’ã¤ãã‚‹
      */
     private void buildTree(int[] freq, int[] parent, int[] l_node, int[] r_node) {
         int[] freq_node = new int[512];
 
-        // ‰Šú‰»
+        // åˆæœŸåŒ–
         for (int i = 0; i < 512; i++) {
             parent[i] = -1;
             l_node[i] = -1;
@@ -211,16 +211,16 @@ System.err.println(prep + " ¨ " + postp + " : " + ((postp * 100) / prep) + "%")
             }
         }
 
-        // Huffman–Ø‚ğì¬
+        // Huffmanæœ¨ã‚’ä½œæˆ
         int minId;
         for (int i = 256; i < (512 - 1); i++) {
-            // e‚Ì‚È‚¢—v‘f‚ÅÅ¬‚Ì‚à‚Ì‚ğ’T‚·¨V‚µ‚¢¶ƒm[ƒh
+            // è¦ªã®ãªã„è¦ç´ ã§æœ€å°ã®ã‚‚ã®ã‚’æ¢ã™â†’æ–°ã—ã„å·¦ãƒãƒ¼ãƒ‰
             minId = findSmallest(i, freq_node, parent);
             l_node[i] = minId;
             parent[minId] = -i;
             freq_node[i] = freq_node[minId];
 
-            // e‚Ì‚È‚¢—v‘f‚ÅÅ¬‚Ì‚à‚Ì‚ğ’T‚·¨V‚µ‚¢‰Eƒm[ƒh
+            // è¦ªã®ãªã„è¦ç´ ã§æœ€å°ã®ã‚‚ã®ã‚’æ¢ã™â†’æ–°ã—ã„å³ãƒãƒ¼ãƒ‰
             minId = findSmallest(i, freq_node, parent);
             r_node[i] = minId;
             parent[minId] = i;
@@ -229,7 +229,7 @@ System.err.println(prep + " ¨ " + postp + " : " + ((postp * 100) / prep) + "%")
     }
 
     /**
-     * ”z—ñ‚Ìe‚ğ‚½‚È‚¢—v‘f‚Ì’†‚ÅÅ¬‚Ì‚à‚Ì‚ğ’T‚µA‚»‚Ì”Ô†‚ğ•Ô‚·
+     * é…åˆ—ã®è¦ªã‚’æŒãŸãªã„è¦ç´ ã®ä¸­ã§æœ€å°ã®ã‚‚ã®ã‚’æ¢ã—ã€ãã®ç•ªå·ã‚’è¿”ã™
      */
     private int findSmallest(int n, int[] freq_node, int[] parent) {
         int min = -1;
@@ -258,7 +258,7 @@ System.err.println(prep + " ¨ " + postp + " : " + ((postp * 100) / prep) + "%")
         if (args.length != 0) {
             inFile = args[0];
         } else {
-            System.err.println("ˆø”‚ª‚ ‚è‚Ü‚¹‚ñ");
+            System.err.println("å¼•æ•°ãŒã‚ã‚Šã¾ã›ã‚“");
             System.exit(1);
         }
 
@@ -279,7 +279,7 @@ System.err.println(prep + " ¨ " + postp + " : " + ((postp * 100) / prep) + "%")
             byte[] data = baos.toByteArray();
 
 /*
-// ƒeƒXƒgo—Í
+// ãƒ†ã‚¹ãƒˆå‡ºåŠ›
 int min = data[0], max = data[0];
 for (int i = 0; i < data.length; i++) {
  if (data[i] > max)
@@ -297,13 +297,13 @@ System.out.println("min: " + min);
             HuffmanEncoder enc = new HuffmanEncoder();
             byte[] encoded = enc.encode(data);
 
-            // Œ‹‰Êo—Í
+            // çµæœå‡ºåŠ›
             String outFile = inFile + ".hff";
             FileOutputStream fos = new FileOutputStream(outFile);
             fos.write(encoded, 0, encoded.length);
             fos.close();
         } catch (FileNotFoundException e) {
-            System.err.println("‚»‚ñ‚Èƒtƒ@ƒCƒ‹‚ ‚è‚Ü‚¹‚ñ");
+            System.err.println("ãã‚“ãªãƒ•ã‚¡ã‚¤ãƒ«ã‚ã‚Šã¾ã›ã‚“");
             System.exit(1);
         } catch (IOException e) {
             e.printStackTrace(System.err);

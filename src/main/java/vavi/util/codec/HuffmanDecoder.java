@@ -28,13 +28,13 @@ public class HuffmanDecoder {
     public byte[] decode(byte[] data) throws IOException {
         byte[] infr = null;
 
-        // Huffman –Ø—p”z—ñ
+        // Huffman æœ¨ç”¨é…åˆ—
         int[] parent = new int[512];
         int[] l_node = new int[512];
         int[] r_node = new int[512];
         int[] freq = new int[512];
 
-        // ‰Šú‰»
+        // åˆæœŸåŒ–
         for (int i = 0; i < 512; i++) {
             parent[i] = -1;
             l_node[i] = -1;
@@ -45,11 +45,11 @@ public class HuffmanDecoder {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         DataInputStream dis = new DataInputStream(bais);
 
-        // --- ƒf[ƒ^“Ç‚İ‚İ
-        // •„†î•ñƒ^ƒCƒv
+        // --- ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
+        // ç¬¦å·æƒ…å ±ã‚¿ã‚¤ãƒ—
         int type = dis.readByte();
 
-        // •p“x”z—ñ
+        // é »åº¦é…åˆ—
         if (type == 0) {
             for (int i = 0; i < 256; i++) {
                 freq[i] = dis.readInt();
@@ -62,19 +62,19 @@ public class HuffmanDecoder {
             }
         }
 
-        // ƒf[ƒ^’·
+        // ãƒ‡ãƒ¼ã‚¿é•·
         int len = dis.readInt();
 
-        // Huffman –Ø‚ğì‚é
-        // ƒnƒtƒ}ƒ“–Ø‚ğì¬
+        // Huffman æœ¨ã‚’ä½œã‚‹
+        // ãƒãƒ•ãƒãƒ³æœ¨ã‚’ä½œæˆ
         int target;
 
-        // Huffman –Ø‚ğì‚é
-        // ƒnƒtƒ}ƒ“–Ø‚ğì¬
+        // Huffman æœ¨ã‚’ä½œã‚‹
+        // ãƒãƒ•ãƒãƒ³æœ¨ã‚’ä½œæˆ
         int min;
         for (int i = 256; i < (512 - 1); i++) {
             for (int j = 0; j < 2; j++) {
-                // e‚Ì‚È‚¢—v‘f‚ÅÅ¬‚Ì‚à‚Ì‚ğ’T‚·¨V‚µ‚¢ƒm[ƒh
+                // è¦ªã®ãªã„è¦ç´ ã§æœ€å°ã®ã‚‚ã®ã‚’æ¢ã™â†’æ–°ã—ã„ãƒãƒ¼ãƒ‰
                 min = -1;
                 target = -1;
 
@@ -102,7 +102,7 @@ public class HuffmanDecoder {
         }
 
         //-------------
-        // ‰ğ“€‚·‚é
+        // è§£å‡ã™ã‚‹
         infr = new byte[len];
 
         int curr_byte;
@@ -111,11 +111,11 @@ public class HuffmanDecoder {
         byte curr_bit;
 
         for (int i = 0; i < len; i++) {
-            target = 510; // 510(ƒ‹[ƒgƒm[ƒh)‚©‚çƒXƒ^[ƒg
+            target = 510; // 510(ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰)ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ
             while (true) {
-                // ‘ÎÛƒrƒbƒg‚ğ“¾‚é
+                // å¯¾è±¡ãƒ“ãƒƒãƒˆã‚’å¾—ã‚‹
                 if ((rest_bits % 8) == 0) {
-                    // 1ƒoƒCƒg“Ç‚İ‚ñ‚Åƒrƒbƒg‚É•ª‰ğ
+                    // 1ãƒã‚¤ãƒˆèª­ã¿è¾¼ã‚“ã§ãƒ“ãƒƒãƒˆã«åˆ†è§£
                     curr_byte = dis.readByte();
                     for (int j = 0; j < 8; j++) {
                         bits[j] = (byte) (curr_byte % 2);
@@ -154,7 +154,7 @@ public class HuffmanDecoder {
         if (args.length != 0) {
             inFile = args[0];
         } else {
-            System.err.println("ˆø”‚ª‚ ‚è‚Ü‚¹‚ñ");
+            System.err.println("å¼•æ•°ãŒã‚ã‚Šã¾ã›ã‚“");
             System.exit(1);
         }
 
@@ -177,13 +177,13 @@ public class HuffmanDecoder {
             HuffmanDecoder dec = new HuffmanDecoder();
             byte[] decoded = dec.decode(data);
 
-            // Œ‹‰Êo—Í
+            // çµæœå‡ºåŠ›
             String outFile = inFile + ".dec";
             FileOutputStream fos = new FileOutputStream(outFile);
             fos.write(decoded, 0, decoded.length);
             fos.close();
         } catch (FileNotFoundException e) {
-            System.err.println("‚»‚ñ‚Èƒtƒ@ƒCƒ‹‚ ‚è‚Ü‚¹‚ñ");
+            System.err.println("ãã‚“ãªãƒ•ã‚¡ã‚¤ãƒ«ã‚ã‚Šã¾ã›ã‚“");
             System.exit(1);
         } catch (IOException e) {
             e.printStackTrace(System.err);

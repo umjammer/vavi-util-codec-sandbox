@@ -4,7 +4,7 @@
 <head>
 <link rev="MADE" href="mailto:vavivavi@yahoo.co.jp">
 <link rel="INDEX" href="orverview.html">
-<meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" type="text/css" href="../../vavi.css">
 <title>Easy Huffman</title>
@@ -13,8 +13,8 @@
  *
  * Written by Naohide Sano
  *
- * @description	Easy Huffman �֘A�̃N���X
- * @status	����m�F(���e�X�g)
+ * @description	Easy Huffman 関連のクラス
+ * @status	動作確認(未テスト)
  *
  * @author	<a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  *
@@ -24,96 +24,96 @@
 
 <body>
 
-<h2>Easy Huffman �֘A�̃N���X��񋟂��܂�</h2>
+<h2>Easy Huffman 関連のクラスを提供します</h2>
 
 <ol>
-<li>�T�v
+<li>概要
  <p>
-�@�g�ѓd�b�ɂ́A�ʐM�T�C�Y�̐��������肪���ł��B
+　携帯電話には、通信サイズの制限がありがちです。
   <pre>
 	Docomo : 10kB
 	J-Phone : 
   </pre>
   <p>
-�@���̃c�[�����g���΁APC��T�[�o�Ńf�[�^�𕄍������āA�g��
-�@�[���œW�J���邱�Ƃ��ł���悤�ɂȂ�܂��B
-�@�g�ђ[��Java�A�v���ւ̓������e�ՂɂȂ�悤�ɁA���̓_�ɔz��
-�@���܂����B
+　このツールを使えば、PCやサーバでデータを符号化して、携帯
+　端末で展開することができるようになります。
+　携帯端末Javaアプリへの導入が容易になるように、次の点に配慮
+　しました。
   </p>
   <ul>
-	<li>�\�[�X�̕ύX�͍ŏ����ɂƂǂ߂�</li>
-	<li>�\�[�X�T�C�Y�̑������ɗ͏���������</li>
+	<li>ソースの変更は最小限にとどめる</li>
+	<li>ソースサイズの増加も極力小さくする</li>
   </ul>
 
   <ul>
-�@ <li>���ӂ��̃C�`<br>
-	gif��zip�Ƃ��ɔ�ׂ�ƁA���k���͈��|�I�ɂ���ڂ��̂ŁA
-	���łɃG���R�[�h���ꂽ�t�@�C���ɂ͎g�p���Ȃ��ł��������B
-	�t�@�C���T�C�Y�����̃t�@�C�����傫���Ȃ�܂��B
+　 <li>注意そのイチ<br>
+	gifやzipとかに比べると、圧縮率は圧倒的にしょぼいので、
+	すでにエンコードされたファイルには使用しないでください。
+	ファイルサイズが元のファイルより大きくなります。
    </li>
-�@ <li>���ӂ��̃j<br>
-	BMP�ł��F���������قǈ��k���͈����Ȃ�܂��B����܂�F��
-	�����ƁA����ς�t�@�C���T�C�Y�����̃t�@�C�����傫��
-	�Ȃ��Ă��܂��܂��B
+　 <li>注意そのニ<br>
+	BMPでも色数が多いほど圧縮率は悪くなります。あんまり色数
+	多いと、やっぱりファイルサイズが元のファイルより大きく
+	なってしまいます。
    </li>
-�@ <li>���ӂ��̃T��<br>
-	�������f�[�^�́A�w�b�_�ɕ������f�[�^(�ő�1kB�ق�)��
-	�����Ă��܂��B���̂��߁A����܂菬�����t�@�C���𕄍���
-	����ƁA�f�[�^�̌��������w�b�_�̒ǉ����̕����傫��
-	�Ȃ��āA�t�@�C���T�C�Y�����t�@�C�����傫���Ȃ�܂��B
+　 <li>注意そのサン<br>
+	符号化データは、ヘッダに符号化データ(最大1kBほど)を
+	持っています。そのため、あんまり小さいファイルを符号化
+	すると、データの減少分よりヘッダの追加分の方が大きく
+	なって、ファイルサイズが元ファイルより大きくなります。
    </li>
   </ul>
-�@�t�@�C���T�C�Y��10kB�ȏ�ŁA�F����32�F�ȉ���BMP�𕄍���
-�@����ƁA����Ȃ�̌��ʂ����҂ł��܂��B
+　ファイルサイズが10kB以上で、色数が32色以下のBMPを符号化
+　すると、それなりの効果が期待できます。
 
-�@<h4>���������Ƃ��ɂ����ɗ����܂�</h4>
+　<h4>こういうときにお役に立ちます</h4>
   <p>
-	504 �� 3D API �Ŏg�����Ƃ��ł���e�N�X�`���́ABMP �`���̂�
-	(D ������)�ł��B�e�N�X�`���̃T�C�Y�͍ő� 128 x 128 �Ȃ̂ŁA
-	��17kB���x�ɂȂ�܂��B
-	�Ƃ��낪 i-mode Java �̐����ŁA��x�ɒʐM�Ŏ擾�ł���f�[�^
-	��10kB�Ɍ����Ă���̂ŁA�e�N�X�`���摜����x�Ɏ擾����
-	���Ƃ͂ł��܂���B
-	�K�؂ȃf�[�^�� Huffman ���������{���΁A�f�[�^�T�C�Y�� 10 kB ���
-	�Ȃ�܂��B
+	504 の 3D API で使うことができるテクスチャは、BMP 形式のみ
+	(D を除く)です。テクスチャのサイズは最大 128 x 128 なので、
+	約17kB程度になります。
+	ところが i-mode Java の制限で、一度に通信で取得できるデータ
+	は10kBに限られているので、テクスチャ画像を一度に取得する
+	ことはできません。
+	適切なデータに Huffman 符号化を施せば、データサイズは 10 kB 弱に
+	なります。
   </p>
  </li>
 <hr>
 
-<li>�g����
+<li>使い方
 
 <ul>
- <li>���k
+ <li>圧縮
   <ul>
-   <li>�R�}���h���C������
+   <li>コマンドラインから
 <pre>
-> java HuffmanEncoder ���̓t�@�C����
+> java HuffmanEncoder 入力ファイル名
 </pre>
-�@�@�o�̓t�@�C�����F���̓t�@�C����.hff
+　　出力ファイル名：入力ファイル名.hff
    </li>
   </ul>
  </li>
 
- <li>�W�J
+ <li>展開
 
   <ul>
-   <li>�R�}���h���C������
+   <li>コマンドラインから
     <pre>
-> java HuffmanDecoder ���̓t�@�C����
+> java HuffmanDecoder 入力ファイル名
 
-�@�@�o�̓t�@�C�����F���̓t�@�C����.dec
+　　出力ファイル名：入力ファイル名.dec
     </pre>
    </li>
-   <li>Doja, MIDP ����
+   <li>Doja, MIDP から
     <ol>
- �@ <li>Decoder.java �� decode() ���\�b�h���܂邲��iAppli, midlet ��
-	�\�[�X�ɃR�s�[�B
+ 　 <li>Decoder.java の decode() メソッドをまるごとiAppli, midlet の
+	ソースにコピー。
      </li>
-�@  <li>�n�t�}�������������f�[�^���o�C�g�z��ɓǂݍ��ށB
-	(���� byte[] enc�Ƃ���)�B
+　  <li>ハフマン符号化したデータをバイト配列に読み込む。
+	(仮に byte[] encとする)。
      </li>
- �@ <li>byte[] dec = decode(enc);
-	�ŁA�W�J���ꂽ�f�[�^���o�C�g�z��dec�Ɋi�[�����B
+ 　 <li>byte[] dec = decode(enc);
+	で、展開されたデータがバイト配列decに格納される。
      </li>
     </ol>
    </li>
@@ -126,27 +126,27 @@
 
 <hr>
 
-<li>�N���X�T�v
+<li>クラス概要
 
 <ul>
  <li>HuffmanEncoder.java<br>
-�@���̓t�@�C������f�[�^��ǂݍ���ŁA�o�C�g�z��ɂ��A
-�@Encode.java��encode()���\�b�h���Ăяo���B
-�@������̂��A�߂�l�i�o�C�g�z��j���t�@�C���ɏ����o���B
+　入力ファイルからデータを読み込んで、バイト配列にし、
+　Encode.javaのencode()メソッドを呼び出す。
+　しかるのち、戻り値（バイト配列）をファイルに書き出す。
  </li>
  <li>HuffmanDecoder.java<br>
-�@���̓t�@�C������f�[�^��ǂݍ���ŁA�o�C�g�z��ɂ��A
-�@Decode.java��decode()���\�b�h���Ăяo���B
-�@������̂��A�߂�l�i�o�C�g�z��j���t�@�C���ɏ����o���B
+　入力ファイルからデータを読み込んで、バイト配列にし、
+　Decode.javaのdecode()メソッドを呼び出す。
+　しかるのち、戻り値（バイト配列）をファイルに書き出す。
  </li>
  <li>Encoder.java<br>
-�@���k�v���O�����{�́B
+　圧縮プログラム本体。
  </li>
  <li>Decoder.java<br>
-�@�W�J�v���O�����{�́B
-�@iAppli�Ƃ��Ŏg���Ƃ��́Adecode()���\�b�h�����̂܂܃R�s�[����B
-�@decode()���\�b�h��iAppli�̃\�[�X�ɒǉ����ăr���h�����Ƃ���A
-�@jar�̑�������800�o�C�g���x�������B
+　展開プログラム本体。
+　iAppliとかで使うときは、decode()メソッドをそのままコピーする。
+　decode()メソッドをiAppliのソースに追加してビルドしたところ、
+　jarの増加分は800バイト程度だった。
  </li>
 </ul>
 
@@ -154,44 +154,44 @@
 
 <hr>
 
-<li>�f�[�^�`��</li>
+<li>データ形式</li>
 
-�ȉ��̏����Ńf�[�^���L�^�����B
+以下の順序でデータが記録される。
 
 <ol>
- <li>�p�x���f�[�^�`�� </li>
-	1�o�C�g
+ <li>頻度情報データ形式 </li>
+	1バイト
 
- <li>�p�x���f�[�^</li>
-�@�p�x���f�[�^�`����0�̏ꍇ
-	int�^x256 = 1024�o�C�g
+ <li>頻度情報データ</li>
+　頻度情報データ形式が0の場合
+	int型x256 = 1024バイト
 
-�@�p�x���f�[�^�`����1�̏ꍇ
-	(byte�^+int�^)x�o�����鐔
+　頻度情報データ形式が1の場合
+	(byte型+int型)x出現する数
 	
-�@�i���v�T�C�Y���������Ȃ�ق��������I�ɑI�΂��j
+　（合計サイズが小さくなるほうが自動的に選ばれる）
 
- <li>�������f�[�^</li>
+ <li>符号化データ</li>
 </ol>
 
 <hr>
 
-<li>���k��</li>
+<li>圧縮率</li>
 
-�T���v��3D�A�v���̌��p�̃e�N�X�`���摜�����k���Ă݂��B
+サンプル3Dアプリの犬用のテクスチャ画像を圧縮してみた。
 <ul>
-<li>���e�N�X�`���摜(245�F)</li>
-17462�o�C�g�i���k�O�j��14015�o�C�g�i���k��j[80%]
+<li>元テクスチャ画像(245色)</li>
+17462バイト（圧縮前）→14015バイト（圧縮後）[80%]
 
-<li>32�F�Ɍ��F</li>
-16572�o�C�g�i���k�O�j��9178�o�C�g�i���k��j[55%]
+<li>32色に減色</li>
+16572バイト（圧縮前）→9178バイト（圧縮後）[55%]
 
-<li>16�F�Ɍ��F</li>
-16508�o�C�g�i���k�O�j��7470�o�C�g�i���k��j[45%]
+<li>16色に減色</li>
+16508バイト（圧縮前）→7470バイト（圧縮後）[45%]
 </ul>
 </ol>
 
-<h2>���ꂩ��������邱��</h2>
+<h2>これから実装すること</h2>
 
 <ul>
   <li></li>

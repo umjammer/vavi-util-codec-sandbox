@@ -62,12 +62,14 @@ class WaveletCompression {
                 }
             }
             hos.flush();
+            hos.close();
             level++;
         }
     }
 
     /** */
     public static void decompress(int data[], int levels, int bits[], InputStream in) throws IOException {
+        @SuppressWarnings("unused")
         int level = 0;
         int skip = 2 << (levels - 1);
         int i;
@@ -96,6 +98,7 @@ class WaveletCompression {
                 }
             }
             level++;
+            his.close();
         }
     }
 }

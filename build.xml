@@ -1,50 +1,58 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ////////////////////////////////////////////////////////////////////// -->
 <!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
 <!--                                                                        -->
 <!-- Written by Naohide Sano                                                -->
 <!--                                                                        -->
-<!-- Huffman codec                                                          -->
+<!-- vavi-commons-codec-sandbox                                             -->
 <!--                                                                        -->
-<!-- @author	Naohide Sano                                                -->
-<!-- @version	0.00	031001	nsano	initial version                     -->
+<!-- @author Naohide Sano                                                   -->
+<!-- @version 0.00 031001 nsano initial version                             -->
 <!--                                                                        -->
 <!-- ////////////////////////////////////////////////////////////////////// -->
 
-<project name="test.106" default="compile" basedir=".">
+<project name="vavi-commons-codec-sandbox" default="test" basedir="."
+  xmlns:artifact="urn:maven-artifact-ant">
 
-  <!-- クラスパスの定義 -->
+  <path id="maven-ant-tasks.classpath">
+    <fileset dir="${user.home}/lib/java/maven-ant-tasks">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+           uri="urn:maven-artifact-ant"
+           classpathref="maven-ant-tasks.classpath" />
+
+  <property environment="env" />
+  <property file="local.properties" />
+
+  <xmlproperty file="pom.xml" />
+
+  <!-- Path Definitions -->
   <path id="project.class.path">
-    <pathelement location="." />
-    <pathelement location="../.." />
+    <pathelement location="${javac.dest.test}" />
+    <pathelement location="${javac.dest}" />
+    <fileset refid="maven-ant-tasks.dependency.fileset" />
   </path>
 
-  <!-- ターゲットの定義 -->
-
-  <!-- clean -->
-  <target name="clean" description="ビルド環境のクリア">
-    <delete>
-      <fileset dir="src">
-        <include name="**/*.class" />
-      </fileset>
-    </delete>
-  </target>
-
-  <!-- javac -->
-  <target name="compile" description="コンパイル">
-    <javac debug="on" deprecation="on">
-      <classpath refid="project.class.path" />
-      <include name="**/*.java" />
-      <src path="src" />
-    </javac>
+  <!-- prepare -->
+  <target name="prepare" description="Preparing">
+    <artifact:pom file="pom.xml" id="maven.project" />
+    <artifact:dependencies fileSetId="maven-ant-tasks.dependency.fileset">
+      <pom refid="maven.project" />
+    </artifact:dependencies>
+    <artifact:mvn pom="pom.xml">
+      <arg value="package" />
+      <arg value="-Dmaven.test.skip=true"/>
+    </artifact:mvn>
   </target>
 
   <!-- test -->
-  <target name="test" depends="compile" description="プログラムのテスト">
+  <target name="test" depends="prepare" description="繝励Ο繧ｰ繝ｩ繝縺ｮ繝�繧ｹ繝�">
     <java classname="HuffmanEncoder" fork="yes">
       <classpath refid="project.class.path" />
-      <arg value="" /> 
+      <arg value="" />
     </java>
   </target>
 

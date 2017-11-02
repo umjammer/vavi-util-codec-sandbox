@@ -37,6 +37,7 @@ System.out.println("Bits: " + depth + " Channels: " + channels + " Sample Rate: 
         short s[] = new short[channels * length];
         int m[] = new int[channels * length];
         sound.readSample(s, 0, length);
+        sound.close();
         for (int i = 0; i < s.length; i++) {
             m[i] = s[i];
         }
