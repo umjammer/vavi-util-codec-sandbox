@@ -11,9 +11,11 @@
   <organization>
     <name></name>
   </organization>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <url>https://github.com/umjammer/vavi-util-codec-sandbox</url>
-  <description></description>
+  <description>1.0.1
+
+    maintenance version</description>
   <build>
     <plugins>
       <plugin>
@@ -27,6 +29,10 @@
     </plugins>
   </build>
   <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -35,5 +41,16 @@
       <version>4.5</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons-sandbox</artifactId>
+      <version>0.3.3</version>
+    </dependency>
   </dependencies>
+  <issueManagement>
+    <url>https://github.com/umjammer/vavi-commons-sandbox/issues</url>
+  </issueManagement>
+  <scm>
+    <url>https://github.com/umjammer/vavi-util-codec-sandbox</url>
+  </scm>
 </project>
