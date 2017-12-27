@@ -17,7 +17,7 @@ import java.io.IOException;
 
 
 /**
- * Huffman. 
+ * Huffman.
  *
  * @see "http://oku.edu.mie-u.ac.jp/~okumura/compression/huffman/index.html"
  */

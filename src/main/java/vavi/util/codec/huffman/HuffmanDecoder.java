@@ -13,9 +13,9 @@ import java.io.IOException;
 
 /**
  * HuffmanDecoder.
- * 
+ *
  * @author Tomonori Kusanagi
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 1.00 020330 T.K inital version <br>
  *          2.00 031001 nsano refine <br>
  */

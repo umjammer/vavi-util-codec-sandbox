@@ -1,6 +1,6 @@
 /*
  * Wavelet Audio Compression
- * 
+ *
  * http://www.toblave.org/soundcompression/
  */
 
@@ -12,7 +12,7 @@ import java.io.OutputStream;
 
 
 /**
- * BitOutputStream. 
+ * BitOutputStream.
  *
  * @author <a href="mailto:sano-n@klab.org">Naohide Sano</a> (nsano)
  * @version 0.00 080516 nsano initial version <br>

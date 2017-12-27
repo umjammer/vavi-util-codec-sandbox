@@ -1,6 +1,6 @@
 /*
  * Wavelet Audio Compression
- * 
+ *
  * http://www.toblave.org/soundcompression/
  */
 
@@ -42,9 +42,9 @@ class InNode {
 
 
 /**
- * HuffmanInputStream. 
+ * HuffmanInputStream.
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080516 nsano initial version <br>
  */
 public class HuffmanInputStream extends FilterInputStream {
@@ -127,7 +127,7 @@ public class HuffmanInputStream extends FilterInputStream {
     }
 
     /**
-     * @param b bits 
+     * @param b bits
      */
     public HuffmanInputStream(InputStream _in, int b) throws IOException {
         super(_in);

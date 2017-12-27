@@ -1,6 +1,6 @@
 /*
  * Wavelet Audio Compression
- * 
+ *
  * http://www.toblave.org/soundcompression/
  */
 
@@ -12,7 +12,7 @@ import java.io.OutputStream;
 
 /**
  * Writes a WAV file.
- * 
+ *
  * @see "http://www.mediatel.lu/workshop/audio/fileformat"
  */
 public class WAVOutputStream extends FilterOutputStream {

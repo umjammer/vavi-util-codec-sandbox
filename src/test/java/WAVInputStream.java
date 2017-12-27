@@ -1,6 +1,6 @@
 /*
  * Wavelet Audio Compression
- * 
+ *
  * http://www.toblave.org/soundcompression/
  */
 
@@ -14,10 +14,10 @@ import java.io.InputStream;
 /**
  * Reads a WAV file.
  *
- * Issues: 
+ * Issues:
  * Available method gives raw bytes of file, not actual bytes of audio.
  * default reads, plus skip just pass through - use readSample
- * 
+ *
  * @see "http://www.mediatel.lu/workshop/audio/fileformat"
  */
 public class WAVInputStream extends FilterInputStream {
@@ -137,7 +137,7 @@ public class WAVInputStream extends FilterInputStream {
         while (true) {
             // Since we're using datain, we will get an exception at
             // eof., so this won't go forever.
-        
+
             int ChunkType = DataIn.readInt();
             int ckSize = readInt();
             switch (ChunkType) {

@@ -1,6 +1,6 @@
 /*
  * Wavelet Audio Compression
- * 
+ *
  * http://www.toblave.org/soundcompression/
  */
 

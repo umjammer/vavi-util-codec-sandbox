@@ -13,9 +13,9 @@ import java.io.IOException;
 
 /**
  * HuffmanEncoder.
- * 
+ *
  * @author Tomonori Kusanagi
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 1.00 020330 T.K inital version <br>
  *          2.00 031001 nsano refine <br>
  */
@@ -130,10 +130,10 @@ for (int j = 0; j < code[n].length; j++)
 
         // 符号化情報
         // type 0：
-        //	 全要素の出現頻度をint型でもつ
-        //   4[byte] * 256 = 1024[byte]	
+        //     全要素の出現頻度をint型でもつ
+        //   4[byte] * 256 = 1024[byte]
         // type 1：
-        //	 出現頻度が0でない要素だけについて、
+        //     出現頻度が0でない要素だけについて、
         //   要素番号と出現頻度（int型）をもつ
         //   1[byte] + (1+4)[byte] * 256
         // type 1の場合の符号化情報データ量

@@ -1,6 +1,6 @@
 /*
  * Wavelet Audio Compression
- * 
+ *
  * http://www.toblave.org/soundcompression/
  */
 
@@ -8,9 +8,9 @@ package vavi.util.wavelet;
 
 
 /**
- * HaarWavelet. 
+ * HaarWavelet.
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080516 nsano initial version <br>
  */
 public class HaarWavelet implements Wavelet {
