@@ -24,15 +24,21 @@ import java.io.IOException;
 public class Huffman {
     /** アルファベットのサイズ (文字 = 0..N-1) */
     static final int N = 256;
+
     private int heapSize, avail;
+
     /** 優先待ち行列用ヒープ */
     private int[] heap = new int[2 * N - 1];
+
     /** Huffman木のデータ構造 */
     private int[] parent = new int[2 * N - 1];
+
     /** 〃 */
     private int[] left = new int[2 * N - 1];
+
     /** 〃 */
     private int[] right = new int[2 * N - 1];
+
     /** 各文字の出現頻度 */
     private int[] freq = new int[2 * N - 1];
 
@@ -114,15 +120,15 @@ public class Huffman {
                 }
             while (--k >= 0)
                 out.putBit(codeBit[k]);
-//            if ((++inCount & 1023) == 0)
-//                System.err.print('.'); // 状況報告
+//if ((++inCount & 1023) == 0)
+// System.err.print('.'); // 状況報告
         }
-//        System.err.println("\nIn : " + inCount + " bytes"); // 結果報告
-//        System.err.println("Out: " + out.outCount() + " bytes (table: " + tableSize + " bytes)");
-//        if (inCount != 0) { // 圧縮比を求めて報告
-//            long cr = (1000L * out.outCount() + inCount / 2) / inCount;
-//            System.err.println("Out/In: " + (cr / 1000) + "." + (cr % 1000));
-//        }
+//System.err.println("\nIn : " + inCount + " bytes"); // 結果報告
+//System.err.println("Out: " + out.outCount() + " bytes (table: " + tableSize + " bytes)");
+//if (inCount != 0) { // 圧縮比を求めて報告
+// long cr = (1000L * out.outCount() + inCount / 2) / inCount;
+// System.err.println("Out/In: " + (cr / 1000) + "." + (cr % 1000));
+//}
         out.flush();
         out.close();
         return baos.toByteArray();
@@ -133,8 +139,7 @@ public class Huffman {
         if (in.getBit()) { // bit=1: 葉でない節
             int i;
             if ((i = avail++) >= 2 * N - 1) {
-                System.err.println("表が間違っています");
-                System.exit(-1);
+                throw new IllegalStateException("表が間違っています");
             }
             left[i] = readTree(in); // 左の枝を読む
             right[i] = readTree(in); // 右の枝を読む
@@ -158,71 +163,81 @@ public class Huffman {
                 else
                     j = left[j];
             out.write(j);
-//            if ((k & 1023) == 0)
-//                System.err.print('.');
+//if ((k & 1023) == 0)
+// System.err.print('.');
         }
-//        System.err.println("\nOut: " + size + " bytes"); // 復号したバイト数
+//System.err.println("\nOut: " + size + " bytes"); // 復号したバイト数
         in.close();
 //        out.close(); // 入出力ファイルをクローズ
         return out.toByteArray();
     }
 
-    /*
-     * 符号化
-     */
+    /* 符号化 */
     public void encode(String infile, String outfile) throws IOException {
         int i, j, k;
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(infile));
         BitOutputStream out = new BitOutputStream(new BufferedOutputStream(new FileOutputStream(outfile)));
         boolean[] codeBit = new boolean[N]; // 符号語
 
-        for (i = 0; i < N; i++) freq[i] = 0; // 頻度の初期化
-        while ((i = in.read()) >= 0) freq[i]++; // 頻度数え
-        heap[1] = 0;            // 長さ0のファイルに備える
+        for (i = 0; i < N; i++)
+            freq[i] = 0; // 頻度の初期化
+        while ((i = in.read()) >= 0)
+            freq[i]++; // 頻度数え
+        heap[1] = 0; // 長さ0のファイルに備える
         heapSize = 0;
         for (i = 0; i < N; i++)
-            if (freq[i] != 0) heap[++heapSize] = i; // 優先待ち行列に登録
-        for (i = heapSize / 2; i >= 1; i--) downHeap(i); // ヒープ作り
-        k = heap[1];            // 以下のループが1回も実行されない場合に備える
-        avail = N;              // 以下のループでHuffman木を作る
-        while (heapSize > 1) {  // 2個以上残りがある間
-            i = heap[1];        // 最小の要素を取り出す
-            heap[1] = heap[heapSize--];  downHeap(1); // ヒープ再構成
-            j = heap[1];        // 次に最小の要素を取り出す
-            k = avail++;        // 新しい節を生成する
-            freq[k] = freq[i] + freq[j];    // 頻度を合計
-            heap[1] = k;    downHeap(1);    // 待ち行列に登録
-            parent[i] = k;  parent[j] = -k; // 木を作る
-            left[k] = i;    right[k] = j;   // 〃
+            if (freq[i] != 0)
+                heap[++heapSize] = i; // 優先待ち行列に登録
+        for (i = heapSize / 2; i >= 1; i--)
+            downHeap(i); // ヒープ作り
+        k = heap[1]; // 以下のループが1回も実行されない場合に備える
+        avail = N; // 以下のループでHuffman木を作る
+        while (heapSize > 1) { // 2個以上残りがある間
+            i = heap[1]; // 最小の要素を取り出す
+            heap[1] = heap[heapSize--];
+            downHeap(1); // ヒープ再構成
+            j = heap[1]; // 次に最小の要素を取り出す
+            k = avail++; // 新しい節を生成する
+            freq[k] = freq[i] + freq[j]; // 頻度を合計
+            heap[1] = k;
+            downHeap(1); // 待ち行列に登録
+            parent[i] = k;
+            parent[j] = -k; // 木を作る
+            left[k] = i;
+            right[k] = j; // 〃
         }
-        parent[k] = 0;            // 根
+        parent[k] = 0; // 根
         out.putBits(BitOutputStream.MAX_BITS, freq[k]); // 入力ファイルのバイト数を出力
-        writeTree(out, k);        // 木を出力
+        writeTree(out, k); // 木を出力
         int tableSize = out.outCount(); // 表の大きさ
         int inCount = 0;
-        in.close();              // 最初に戻る
+        in.close(); // 最初に戻る
         in = new BufferedInputStream(new FileInputStream(infile));
         while ((j = in.read()) >= 0) {
             k = 0;
             while ((j = parent[j]) != 0)
-                if (j > 0) codeBit[k++] = false;
-                else {     codeBit[k++] = true;  j = -j;  }
-            while (--k >= 0) out.putBit(codeBit[k]);
-            if ((++inCount & 1023) == 0) System.err.print('.'); // 状況報告
+                if (j > 0)
+                    codeBit[k++] = false;
+                else {
+                    codeBit[k++] = true;
+                    j = -j;
+                }
+            while (--k >= 0)
+                out.putBit(codeBit[k]);
+if ((++inCount & 1023) == 0)
+ System.err.print('.'); // 状況報告
         }
-        System.err.println("\nIn : " + inCount +  " bytes");  // 結果報告
-        System.err.println("Out: " + out.outCount() +
-                           " bytes (table: " + tableSize + " bytes)");
-        if (inCount != 0) {     // 圧縮比を求めて報告
+System.err.println("\nIn : " + inCount + " bytes"); // 結果報告
+System.err.println("Out: " + out.outCount() + " bytes (table: " + tableSize + " bytes)");
+        if (inCount != 0) { // 圧縮比を求めて報告
             long cr = (1000L * out.outCount() + inCount / 2) / inCount;
-            System.err.println("Out/In: " + (cr / 1000) + "." + (cr % 1000));
+System.err.println("Out/In: " + (cr / 1000) + "." + (cr % 1000));
         }
-        in.close();  out.close(); // 入出力ファイルをクローズ
+        in.close();
+        out.close(); // 入出力ファイルをクローズ
     }
 
-    /*
-     * 復号
-     */
+    /* 復号 */
     public void decode(String infile, String outfile) throws IOException {
         BitInputStream in = new BitInputStream(new BufferedInputStream(new FileInputStream(infile)));
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outfile));
@@ -230,13 +245,18 @@ public class Huffman {
         avail = N;
         int root = readTree(in); // 木を読む
         for (int k = 0; k < size; k++) { // 各文字を復号
-            int j = root;  // 根
+            int j = root; // 根
             while (j >= N)
-                if (in.getBit()) j = right[j];  else j = left[j];
+                if (in.getBit())
+                    j = right[j];
+                else
+                    j = left[j];
             out.write(j);
-            if ((k & 1023) == 0) System.err.print('.');
+if ((k & 1023) == 0)
+ System.err.print('.');
         }
-        System.err.println("\nOut: " + size + " bytes"); // 復号したバイト数
-        in.close();  out.close(); // 入出力ファイルをクローズ
+System.err.println("\nOut: " + size + " bytes"); // 復号したバイト数
+        in.close();
+        out.close(); // 入出力ファイルをクローズ
     }
 }

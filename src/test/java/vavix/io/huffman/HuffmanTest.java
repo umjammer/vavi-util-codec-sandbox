@@ -11,11 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import vavix.util.Checksum;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class HuffmanTest {
 
-    static String text = "文字データだけで構成されたファイル。どんな機種のコンピュータでも共通して利用できる数少ないファイル形式の一つ。" +
+    static final String text = "文字データだけで構成されたファイル。どんな機種のコンピュータでも共通して利用できる数少ないファイル形式の一つ。" +
 "ワープロソフトなどで文書を作成した際には、テキストファイルに変換すれば、他の機種やソフトウェアでもそのデータを利用することができる。" +
 "ただし、テキストファイルは純粋に文字データのみで構成され、修飾情報や埋め込まれた画像など文字以外のデータは表現することができない。" +
 "また、改行やタブなど、文章の作成に必要なものを除いて、制御コードを含むことはできない。このため、他の形式から変換する際には注意が必要。" +

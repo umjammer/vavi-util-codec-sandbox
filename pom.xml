@@ -5,17 +5,26 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>vavi</groupId>
   <artifactId>vavi-util-codec-sandbox</artifactId>
+  <version>1.0.1</version>
+
   <name>Vavi Codec Sandbox API</name>
   <organization>
     <name></name>
   </organization>
-  <version>1.0.1</version>
   <url>https://github.com/umjammer/vavi-util-codec-sandbox</url>
   <description>1.0.1
 
     maintenance version</description>
+  <issueManagement>
+    <url>https://github.com/umjammer/vavi-commons-sandbox/issues</url>
+  </issueManagement>
+  <scm>
+    <url>https://github.com/umjammer/vavi-util-codec-sandbox</url>
+  </scm>
+
   <build>
     <plugins>
       <plugin>
@@ -28,29 +37,32 @@
       </plugin>
     </plugins>
   </build>
+
   <repositories>
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
   </repositories>
+
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.5</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons-sandbox</artifactId>
       <version>0.3.3</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.3.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.3.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-  <issueManagement>
-    <url>https://github.com/umjammer/vavi-commons-sandbox/issues</url>
-  </issueManagement>
-  <scm>
-    <url>https://github.com/umjammer/vavi-util-codec-sandbox</url>
-  </scm>
 </project>

@@ -41,7 +41,8 @@ public class HuffmanDecoder {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         DataInputStream dis = new DataInputStream(bais);
 
-        // --- データ読み込み
+        // データ読み込み
+
         // 符号情報タイプ
         int type = dis.readByte();
 
@@ -97,7 +98,6 @@ public class HuffmanDecoder {
             }
         }
 
-        //-------------
         // 解凍する
         infr = new byte[len];
 

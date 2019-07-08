@@ -16,22 +16,22 @@ package vavi.util.wavelet;
 public interface Wavelet {
 
     /** */
-    void doFWT(int data[], int depth);
+    void doFWT(int[] data, int depth);
 
     /** */
-    void doIFWT(int data[], int depth);
+    void doIFWT(int[] data, int depth);
 
     /** */
-    void doFWT_even(int data[], int skip);
+    void doFWT_even(int[] data, int skip);
 
     /** */
-    void doFWT_odd(int data[], int skip);
+    void doFWT_odd(int[] data, int skip);
 
     /** */
-    void doIWT_even(int data[], int skip);
+    void doIWT_even(int[] data, int skip);
 
     /** */
-    void doIWT_odd(int data[], int skip);
+    void doIWT_odd(int[] data, int skip);
 }
 
 /* */

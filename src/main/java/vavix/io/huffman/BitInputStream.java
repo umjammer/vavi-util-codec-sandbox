@@ -16,8 +16,6 @@ import java.io.InputStream;
  * 
  * @see BitOutputStream
  * @see Huffman
- * @see Slide
- * @see Squeeze
  */
 class BitInputStream extends FilterInputStream {
 

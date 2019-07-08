@@ -34,14 +34,12 @@ public class HuffmanEncoder {
             freq[data[i] + 128]++;
         }
 
-/*
 // テスト出力
-for (int i = 0; i < 256; i++) {
- System.out.print(freq[i] + " ");
- if (i % 16 == 15)
-  System.out.println();
-}
-*/
+//for (int i = 0; i < 256; i++) {
+// System.out.print(freq[i] + " ");
+// if (i % 16 == 15)
+//  System.out.println();
+//}
 
         // ハフマン木を作成
         int[] parent = new int[512];
@@ -49,11 +47,9 @@ for (int i = 0; i < 256; i++) {
         int[] r_node = new int[512];
         buildTree(freq, parent, l_node, r_node);
 
-/*
 // テスト出力
-for (int i = 0; i < 512 - 1; i++)
- System.out.println("[" + i + "] l:" + l_node[i] + " r:" + r_node[i] + " p:" + parent[i]);
-*/
+//for (int i = 0; i < 512 - 1; i++)
+// System.out.println("[" + i + "] l:" + l_node[i] + " r:" + r_node[i] + " p:" + parent[i]);
 
         // 符号を作成
         int n;
@@ -85,29 +81,26 @@ for (int i = 0; i < 512 - 1; i++)
             }
         }
 
-/*
 // テスト出力
-for (int i = 0; i < 256; i++) {
- System.out.print("["+i+"]:"+freq[i]+" - ");
- if (freq[i] > 0) {
-  for (int j = 0; j < code[i].length; j++) {
-   System.out.print(code[i][j]);
-  }
- }
- System.out.println();
-}
-*/
+//for (int i = 0; i < 256; i++) {
+// System.out.print("["+i+"]:"+freq[i]+" - ");
+// if (freq[i] > 0) {
+//  for (int j = 0; j < code[i].length; j++) {
+//   System.out.print(code[i][j]);
+//  }
+// }
+// System.out.println();
+//}
+
         // 符号を得る
         baos.reset();
 
         for (int i = 0; i < data.length; i++) {
             baos.write(code[data[i] + 128], 0, code[data[i] + 128].length);
 
-/*
-n = data[i] + 128;
-for (int j = 0; j < code[n].length; j++)
- System.out.print(code[n][j]);
-*/
+//n = data[i] + 128;
+//for (int j = 0; j < code[n].length; j++)
+// System.out.print(code[n][j]);
         }
 
         byte[] tmp = baos.toByteArray();

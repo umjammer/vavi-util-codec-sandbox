@@ -13,11 +13,9 @@ import java.io.OutputStream;
 
 /**
  * Huffman法などで使うビット出力ルーチンです。
- * 
+ *
  * @see BitInputStream
  * @see Huffman
- * @see Slide
- * @see Squeeze
  */
 class BitOutputStream extends FilterOutputStream {
     /** 書き込み可能な最大ビット数 */
@@ -31,7 +29,7 @@ class BitOutputStream extends FilterOutputStream {
 
     /**
      * コンストラクタ
-     * 
+     *
      * @param out 出力ストリーム
      */
     public BitOutputStream(OutputStream out) {
