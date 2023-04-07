@@ -66,13 +66,13 @@ System.err.print(new String(decoded, encoding));
             System.exit(1);
         }
 
-        DataInputStream dis = null;
+        DataInputStream dis;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         try {
             dis = new DataInputStream(new FileInputStream(inFile));
 
-            int len = 0;
+            int len;
             byte[] buff = new byte[1024];
 
             while ((len = dis.read(buff, 0, 1024)) != -1) {

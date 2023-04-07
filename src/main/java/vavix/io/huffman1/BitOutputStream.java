@@ -51,7 +51,7 @@ class BitOutputStream extends FilterOutputStream {
     }
 
     /** write an array of bytes - assume they want this byte-aligned... */
-    public void write(byte b[], int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
         // if there's something in the buffer, just write it.
         if (bitsfree != 8) {
             out.write((buffer << bitsfree) & 0xFF);

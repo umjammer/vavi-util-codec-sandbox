@@ -17,7 +17,7 @@ import vavix.io.huffman1.HuffmanOutputStream;
 class WaveletCompression {
 
     /** quantize and compress are combined. */
-    public static void compress(int data[], int levels, int bits[], OutputStream out) throws IOException {
+    public static void compress(int[] data, int levels, int[] bits, OutputStream out) throws IOException {
         int i;
         int level = 0;
         int skip = 2 << (levels - 1);

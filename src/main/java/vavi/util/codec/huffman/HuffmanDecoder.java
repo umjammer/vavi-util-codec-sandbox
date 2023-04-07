@@ -22,7 +22,7 @@ import java.io.IOException;
 public class HuffmanDecoder {
     /** */
     public byte[] decode(byte[] data) throws IOException {
-        byte[] infr = null;
+        byte[] infr;
 
         // Huffman 木用配列
         int[] parent = new int[512];

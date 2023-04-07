@@ -30,8 +30,8 @@ public class HuffmanEncoder {
         for (int i = 0; i < 256; i++) {
             freq[i] = 0;
         }
-        for (int i = 0; i < data.length; i++) {
-            freq[data[i] + 128]++;
+        for (byte b : data) {
+            freq[b + 128]++;
         }
 
 // テスト出力
@@ -95,8 +95,8 @@ public class HuffmanEncoder {
         // 符号を得る
         baos.reset();
 
-        for (int i = 0; i < data.length; i++) {
-            baos.write(code[data[i] + 128], 0, code[data[i] + 128].length);
+        for (byte datum : data) {
+            baos.write(code[datum + 128], 0, code[datum + 128].length);
 
 //n = data[i] + 128;
 //for (int j = 0; j < code[n].length; j++)
@@ -110,9 +110,9 @@ public class HuffmanEncoder {
             // 符号化バイト列作成
             huff[i] = 0;
             for (int j = 0; j < 8; j++) {
-                huff[i] <<= 1;
+                huff[i] = (byte) (huff[i] << 1);
                 if (((i * 8) + j) < tmp.length) {
-                    huff[i] += tmp[(i * 8) + j];
+                    huff[i] = (byte) (huff[i] + tmp[(i * 8) + j]);
                 }
             }
         }

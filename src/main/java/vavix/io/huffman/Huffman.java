@@ -14,6 +14,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
@@ -175,8 +177,8 @@ public class Huffman {
     /* 符号化 */
     public void encode(String infile, String outfile) throws IOException {
         int i, j, k;
-        BufferedInputStream in = new BufferedInputStream(new FileInputStream(infile));
-        BitOutputStream out = new BitOutputStream(new BufferedOutputStream(new FileOutputStream(outfile)));
+        BufferedInputStream in = new BufferedInputStream(Files.newInputStream(Paths.get(infile)));
+        BitOutputStream out = new BitOutputStream(new BufferedOutputStream(Files.newOutputStream(Paths.get(outfile))));
         boolean[] codeBit = new boolean[N]; // 符号語
 
         for (i = 0; i < N; i++)
@@ -212,7 +214,7 @@ public class Huffman {
         int tableSize = out.outCount(); // 表の大きさ
         int inCount = 0;
         in.close(); // 最初に戻る
-        in = new BufferedInputStream(new FileInputStream(infile));
+        in = new BufferedInputStream(Files.newInputStream(Paths.get(infile)));
         while ((j = in.read()) >= 0) {
             k = 0;
             while ((j = parent[j]) != 0)
@@ -239,8 +241,8 @@ System.err.println("Out/In: " + (cr / 1000) + "." + (cr % 1000));
 
     /* 復号 */
     public void decode(String infile, String outfile) throws IOException {
-        BitInputStream in = new BitInputStream(new BufferedInputStream(new FileInputStream(infile)));
-        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outfile));
+        BitInputStream in = new BitInputStream(new BufferedInputStream(Files.newInputStream(Paths.get(infile))));
+        BufferedOutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(outfile)));
         int size = in.getBits(BitInputStream.MAX_BITS); // 元のバイト数
         avail = N;
         int root = readTree(in); // 木を読む
