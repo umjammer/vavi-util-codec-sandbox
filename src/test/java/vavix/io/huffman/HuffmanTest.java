@@ -10,7 +10,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2012/10/10 umjammer initial version <br>
  */
-public class HuffmanTest {
+class HuffmanTest {
 
     static final String text = "文字データだけで構成されたファイル。どんな機種のコンピュータでも共通して利用できる数少ないファイル形式の一つ。" +
 "ワープロソフトなどで文書を作成した際には、テキストファイルに変換すれば、他の機種やソフトウェアでもそのデータを利用することができる。" +
@@ -35,8 +38,13 @@ public class HuffmanTest {
 "HTMLファイルなどはコンピュータが解析してレイアウトできるようにタグ(付加情報)が埋め込まれているが、タグ自体は通常の文字コードの範囲内で表現されているため、HTMLファイルもテキストファイルの一種と言える。" +
 "ただし、HTMLファイルはテキストエディタで開いたときとWebブラウザで開いたときに見え方がまったく異なるため、文章だけで構成されるファイルとは区別して扱う必要がある。";
 
+    @BeforeAll
+    static void setup() throws IOException {
+        Files.createDirectories(Paths.get("tmp"));
+    }
+
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         final String encoding = "utf-8";
 System.err.println("original: " + text.getBytes(encoding).length);
         Huffman encoder = new Huffman();
@@ -51,7 +59,7 @@ System.err.print(new String(decoded, encoding));
     }
 
     @Test
-    public void test2() throws Exception {
+    void test2() throws Exception {
         String file = "/tmp/test2.txt";
         Writer writer = new FileWriter(file);
         writer.write(text);
@@ -72,7 +80,7 @@ System.err.println("decoded: " + new File(decoded).length());
     }
 
     @Test
-    public void test3() throws Exception {
+    void test3() throws Exception {
         String actualDecoded = "src/test/resources/data.dec";
         String decoded = "/tmp/test3.dec";
         String encoded = "src/test/resources/data.enc";
@@ -83,7 +91,7 @@ System.err.println("decoded: " + new File(decoded).length());
 
     @Test
     @Disabled
-    public void test4() throws Exception {
+    void test4() throws Exception {
         String actualEncoded = "src/test/resources/data.enc";
         String decoded = "src/test/resources/data.dec";
         String encoded = "/tmp/test3.enc";
@@ -93,7 +101,7 @@ System.err.println("decoded: " + new File(decoded).length());
     }
 
     @Test
-    public void test5() throws Exception {
+    void test5() throws Exception {
         String actualDecoded = "src/test/resources/data.dec";
         String decoded = "/tmp/test3.dec";
         String encoded = "/tmp/test3.enc";
