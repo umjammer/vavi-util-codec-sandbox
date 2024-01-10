@@ -16,7 +16,7 @@ import vavi.util.wavelet.Wavelet;
 class Encode {
 
     /**
-     * @param args
+     * @param args 0:
      */
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
