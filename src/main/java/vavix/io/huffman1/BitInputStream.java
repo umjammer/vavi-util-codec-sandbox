@@ -53,7 +53,7 @@ class BitInputStream extends FilterInputStream {
     }
 
     /** */
-    public int read(byte b[], int off, int len) throws IOException {
+    public int read(byte[] b, int off, int len) throws IOException {
         bitsavail = 0;
         return in.read(b, off, len);
     }

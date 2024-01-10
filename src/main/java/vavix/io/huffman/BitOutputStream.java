@@ -18,6 +18,7 @@ import java.io.OutputStream;
  * @see Huffman
  */
 class BitOutputStream extends FilterOutputStream {
+
     /** 書き込み可能な最大ビット数 */
     public static final int MAX_BITS = 31;
     /** ビット出力カウンタ */
@@ -55,8 +56,9 @@ class BitOutputStream extends FilterOutputStream {
      */
     public void putBit(boolean bit) throws IOException {
         putCount--;
-        if (bit)
+        if (bit) {
             bitBuf |= (1 << putCount);
+        }
         if (putCount == 0) {
             out.write(bitBuf);
             bitBuf = 0;
@@ -81,9 +83,7 @@ class BitOutputStream extends FilterOutputStream {
         bitBuf |= rightBits(n, x) << putCount;
     }
 
-    /**
-     * ストリームをクローズ
-     */
+    @Override
     public void close() throws IOException {
         putBits(7, 0);
         super.close(); // バッファをフラッシュ

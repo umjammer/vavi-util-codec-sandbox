@@ -46,8 +46,9 @@ class BitInputStream extends FilterInputStream {
      * 1ビットを読み込み
      */
     public boolean getBit() throws IOException {
-        if (--getCount >= 0)
+        if (--getCount >= 0) {
             return ((bitBuf >>> getCount) & 1) == 1;
+        }
         getCount = 7;
         bitBuf = in.read();
         return ((bitBuf >>> 7) & 1) == 1;

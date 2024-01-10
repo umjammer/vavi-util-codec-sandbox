@@ -6,8 +6,8 @@
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import vavi.util.wavelet.FourTwoWavelet;
 import vavi.util.wavelet.Wavelet;
@@ -16,7 +16,7 @@ import vavi.util.wavelet.Wavelet;
 class Encode {
 
     /**
-     * @param args
+     * @param args 0:
      */
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
@@ -27,23 +27,23 @@ class Encode {
 
         Wavelet wavelet = new FourTwoWavelet();
 
-        WAVInputStream sound = new WAVInputStream(new BufferedInputStream(new FileInputStream(filename)));
+        WAVInputStream sound = new WAVInputStream(new BufferedInputStream(Files.newInputStream(Paths.get(filename))));
         int length = sound.length();
         int channels = sound.channels();
         int depth = sound.depth();
         int rate = sound.rate();
 
 System.out.println("Bits: " + depth + " Channels: " + channels + " Sample Rate: " + rate + " Length: " + length);
-        short s[] = new short[channels * length];
-        int m[] = new int[channels * length];
+        short[] s = new short[channels * length];
+        int[] m = new int[channels * length];
         sound.readSample(s, 0, length);
         for (int i = 0; i < s.length; i++) {
             m[i] = s[i];
         }
         sound.close();
         wavelet.doFWT(m, 8);
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("test.bin"));
-        int bitcounts[] = new int[8];
+        BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(Paths.get("test.bin")));
+        int[] bitcounts = new int[8];
         bitcounts[0] = 13;
         bitcounts[1] = 11;
         bitcounts[2] = 10;
@@ -58,7 +58,7 @@ System.out.println("Bits: " + depth + " Channels: " + channels + " Sample Rate: 
 //            m[i] = (short) m[i];
 //        }
 
-        BufferedInputStream bin = new BufferedInputStream(new FileInputStream("test.bin"));
+        BufferedInputStream bin = new BufferedInputStream(Files.newInputStream(Paths.get("test.bin")));
         WaveletCompression.decompress(m, 8, bitcounts, bin);
         wavelet.doIFWT(m, 8);
 
@@ -73,7 +73,7 @@ System.out.println("Bits: " + depth + " Channels: " + channels + " Sample Rate: 
                 }
             }
         }
-        WAVOutputStream s2 = new WAVOutputStream(new BufferedOutputStream(new FileOutputStream("out.wav")), channels, rate, depth, length);
+        WAVOutputStream s2 = new WAVOutputStream(new BufferedOutputStream(Files.newOutputStream(Paths.get("out.wav"))), channels, rate, depth, length);
         s2.writeSample(s, 0, length);
         s2.close();
     }

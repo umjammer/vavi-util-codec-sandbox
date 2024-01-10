@@ -98,17 +98,17 @@ public class WAVInputStream extends FilterInputStream {
         return false;
     }
 
-    public void readSample(byte b[], int start, int length) throws IOException {
+    public void readSample(byte[] b, int start, int length) throws IOException {
         in.read(b, start * numChannels, length * numChannels);
     }
 
-    public void readSample(short b[], int start, int length) throws IOException {
+    public void readSample(short[] b, int start, int length) throws IOException {
         for (int off = 0; off < length; off++)
             for (int channel = 0; channel < numChannels; channel++)
                 b[channel + (start + off) * numChannels] = readShort();
     }
 
-    public void readSample(int b[], int start, int length) throws IOException {
+    public void readSample(int[] b, int start, int length) throws IOException {
         for (int off = 0; off < length; off++)
             for (int channel = 0; channel < numChannels; channel++)
                 b[b[channel + (start + off) * numChannels]] = readInt();

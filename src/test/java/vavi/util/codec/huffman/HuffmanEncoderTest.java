@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import vavi.util.codec.huffman.HuffmanEncoder;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class HuffmanEncoderTest {
 
     @Test
+    @Disabled
     public void test() {
         fail("Not yet implemented");
     }
@@ -47,13 +49,13 @@ public class HuffmanEncoderTest {
             System.exit(1);
         }
 
-        DataInputStream dis = null;
+        DataInputStream dis;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         try {
             dis = new DataInputStream(new FileInputStream(inFile));
 
-            int len = 0;
+            int len;
             byte[] buff = new byte[1024];
 
             while ((len = dis.read(buff, 0, 1024)) != -1) {

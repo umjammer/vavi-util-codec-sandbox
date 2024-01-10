@@ -28,7 +28,7 @@ class InNode {
     InNode parent;
 
     /** */
-    InNode child[];
+    InNode[] child;
 
     /** */
     int value;

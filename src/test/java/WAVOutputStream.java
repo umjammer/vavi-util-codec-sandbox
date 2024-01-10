@@ -82,11 +82,11 @@ public class WAVOutputStream extends FilterOutputStream {
         writeInt(channels * depth * length / 8);
     }
 
-    public void writeSample(byte b[], int start, int length) throws IOException {
+    public void writeSample(byte[] b, int start, int length) throws IOException {
         out.write(b, start * numChannels, length * numChannels);
     }
 
-    public void writeSample(short b[], int start, int length) throws IOException {
+    public void writeSample(short[] b, int start, int length) throws IOException {
         for (int off = 0; off < length; off++) {
             for (int channel = 0; channel < numChannels; channel++) {
                 writeShort(b[channel + (start + off) * numChannels]);
@@ -94,7 +94,7 @@ public class WAVOutputStream extends FilterOutputStream {
         }
     }
 
-    public void readSample(int b[], int start, int length) throws IOException {
+    public void readSample(int[] b, int start, int length) throws IOException {
         for (int off = 0; off < length; off++) {
             for (int channel = 0; channel < numChannels; channel++) {
                 writeInt(b[channel + (start + off) * numChannels]);

@@ -47,7 +47,7 @@ class Node {
     Node parent;
 
     /** */
-    Node child[];
+    Node[] child;
 
     /** */
     int code;
