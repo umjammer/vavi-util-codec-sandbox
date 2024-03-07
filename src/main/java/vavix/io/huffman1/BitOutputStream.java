@@ -30,7 +30,7 @@ class BitOutputStream extends FilterOutputStream {
         super(_out);
     }
 
-    /** */
+    @Override
     public void flush() throws IOException {
         // if there's something in the buffer, just write it.
         if (bitsfree != 8) {
@@ -41,6 +41,7 @@ class BitOutputStream extends FilterOutputStream {
     }
 
     /** write a single byte - assume they want this byte-aligned... */
+    @Override
     public void write(int b) throws IOException {
         // if there's something in the buffer, just write it.
         if (bitsfree != 8) {
@@ -51,6 +52,7 @@ class BitOutputStream extends FilterOutputStream {
     }
 
     /** write an array of bytes - assume they want this byte-aligned... */
+    @Override
     public void write(byte[] b, int off, int len) throws IOException {
         // if there's something in the buffer, just write it.
         if (bitsfree != 8) {
@@ -70,5 +72,3 @@ class BitOutputStream extends FilterOutputStream {
         }
     }
 }
-
-/* */

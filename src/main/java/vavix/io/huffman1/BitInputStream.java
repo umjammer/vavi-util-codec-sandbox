@@ -30,12 +30,13 @@ class BitInputStream extends FilterInputStream {
         super(in);
     }
 
-    /** */
+    @Override
     public boolean markSupported() {
         return false;
     }
 
     /** read a single byte */
+    @Override
     public int read() throws IOException {
         buffer = (buffer << 8) | in.read();
         return (buffer >> bitsavail) & 0xFF;
@@ -52,7 +53,7 @@ class BitInputStream extends FilterInputStream {
         return (buffer >> bitsavail) & 1;
     }
 
-    /** */
+    @Override
     public int read(byte[] b, int off, int len) throws IOException {
         bitsavail = 0;
         return in.read(b, off, len);
@@ -69,5 +70,3 @@ class BitInputStream extends FilterInputStream {
         return (buffer >> bitsavail) & ((1 << length) - 1);
     }
 }
-
-/* */

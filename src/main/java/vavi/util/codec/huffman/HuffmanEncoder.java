@@ -185,7 +185,7 @@ System.err.println(prep + " -> " + postp + ": " + ((postp * 100) / prep) + "%");
     /**
      * Huffman木をつくる
      */
-    private void buildTree(int[] freq, int[] parent, int[] l_node, int[] r_node) {
+    private static void buildTree(int[] freq, int[] parent, int[] l_node, int[] r_node) {
         int[] freq_node = new int[512];
 
         // 初期化
@@ -220,7 +220,7 @@ System.err.println(prep + " -> " + postp + ": " + ((postp * 100) / prep) + "%");
     /**
      * 配列の親を持たない要素の中で最小のものを探し、その番号を返す
      */
-    private int findSmallest(int n, int[] freq_node, int[] parent) {
+    private static int findSmallest(int n, int[] freq_node, int[] parent) {
         int min = -1;
         int minId = -1;
 

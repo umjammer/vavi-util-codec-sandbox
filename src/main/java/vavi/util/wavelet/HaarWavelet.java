@@ -16,6 +16,7 @@ package vavi.util.wavelet;
 public class HaarWavelet implements Wavelet {
 
     /* */
+    @Override
     public void doFWT(int[] data, int depth) {
         for (int skip = 2; skip <= (2 << (depth - 1)); skip <<= 1) {
             doFWT_odd(data, skip);
@@ -24,6 +25,7 @@ public class HaarWavelet implements Wavelet {
     }
 
     /* */
+    @Override
     public void doIFWT(int[] data, int depth) {
         for (int skip = (2 << (depth - 1)); skip >= 2; skip >>= 1) {
             doIWT_even(data, skip);
@@ -32,6 +34,7 @@ public class HaarWavelet implements Wavelet {
     }
 
     /* by default, do haar wavelet */
+    @Override
     public void doFWT_even(int[] data, int skip) {
         for (int el = 0; el < data.length - skip / 2; el += skip) {
             // add half of odd coefficient to get average
@@ -40,6 +43,7 @@ public class HaarWavelet implements Wavelet {
     }
 
     /* */
+    @Override
     public void doFWT_odd(int[] data, int skip) {
         for (int el = skip / 2; el < data.length; el += skip) {
             // difference
@@ -48,6 +52,7 @@ public class HaarWavelet implements Wavelet {
     }
 
     /* */
+    @Override
     public void doIWT_even(int[] data, int skip) {
         for (int el = 0; el < data.length - skip / 2; el += skip) {
             // add half of odd coefficient to get average
@@ -56,6 +61,7 @@ public class HaarWavelet implements Wavelet {
     }
 
     /* */
+    @Override
     public void doIWT_odd(int[] data, int skip) {
         for (int el = skip / 2; el < data.length; el += skip) {
             // difference

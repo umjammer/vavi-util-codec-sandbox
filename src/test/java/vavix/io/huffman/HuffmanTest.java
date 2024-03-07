@@ -7,7 +7,6 @@
 package vavix.io.huffman;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;

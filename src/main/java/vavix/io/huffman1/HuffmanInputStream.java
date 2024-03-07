@@ -11,36 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-/** */
-class InNode {
-    /** */
-    public InNode(InNode p, InNode c1, InNode c2, int n, int c, int w) {
-        child = new InNode[2];
-        parent = p;
-        child[0] = c1;
-        child[1] = c2;
-        value = n;
-        count = c;
-        which = w;
-    }
-
-    /** */
-    InNode parent;
-
-    /** */
-    InNode[] child;
-
-    /** */
-    int value;
-
-    /** */
-    int count;
-
-    /** */
-    int which;
-}
-
-
 /**
  * HuffmanInputStream.
  *
@@ -49,14 +19,43 @@ class InNode {
  */
 public class HuffmanInputStream extends FilterInputStream {
 
-    /** */
-    private InNode zeroNode;
+    static class Node {
+
+        /** */
+        public Node(Node p, Node c1, Node c2, int n, int c, int w) {
+            child = new Node[2];
+            parent = p;
+            child[0] = c1;
+            child[1] = c2;
+            value = n;
+            count = c;
+            which = w;
+        }
+
+        /** */
+        Node parent;
+
+        /** */
+        Node[] child;
+
+        /** */
+        int value;
+
+        /** */
+        int count;
+
+        /** */
+        int which;
+    }
 
     /** */
-    private InNode rootNode;
+    private Node zeroNode;
 
     /** */
-    private InNode escapeNode;
+    private Node rootNode;
+
+    /** */
+    private Node escapeNode;
 
     /** */
     private BitInputStream bis;
@@ -65,9 +64,9 @@ public class HuffmanInputStream extends FilterInputStream {
     private int bits;
 
     /** */
-    private InNode addnode() {
-        zeroNode.child[0] = new InNode(zeroNode, null, null, 0, 1, 0);
-        InNode n = new InNode(zeroNode, null, null, 0, 0, 1);
+    private Node addnode() {
+        zeroNode.child[0] = new Node(zeroNode, null, null, 0, 1, 0);
+        Node n = new Node(zeroNode, null, null, 0, 0, 1);
         zeroNode.child[1] = n;
         zeroNode.count = 1;
         zeroNode = zeroNode.child[0];
@@ -75,11 +74,11 @@ public class HuffmanInputStream extends FilterInputStream {
     }
 
     /** */
-    private void swap(InNode a, InNode b) {
+    private static void swap(Node a, Node b) {
         a.parent.child[a.which] = b;
         b.parent.child[b.which] = a;
 
-        InNode tn = a.parent;
+        Node tn = a.parent;
         a.parent = b.parent;
         b.parent = tn;
 
@@ -89,11 +88,11 @@ public class HuffmanInputStream extends FilterInputStream {
     }
 
     /** */
-    private void update(InNode n) {
+    private static void update(Node n) {
         while (n != null) {
             n.count++;
             if ((n.parent != null) && (n.parent.parent != null)) {
-                InNode uncle = n.parent.parent.child[n.parent.which ^ 1];
+                Node uncle = n.parent.parent.child[n.parent.which ^ 1];
                 if (n.count > uncle.count) {
                     swap(n, uncle);
                 }
@@ -109,7 +108,7 @@ public class HuffmanInputStream extends FilterInputStream {
 
     /** */
     public int readInt() throws IOException {
-        InNode n = rootNode;
+        Node n = rootNode;
         int rv;
         while (n.child[0] != null) {
             n = n.child[bis.readBit()];
@@ -133,12 +132,10 @@ public class HuffmanInputStream extends FilterInputStream {
         super(_in);
         bits = b;
         bis = new BitInputStream(in);
-        rootNode = new InNode(null, null, null, 0, 2, 0);
-        zeroNode = new InNode(rootNode, null, null, 0, 1, 0);
-        escapeNode = new InNode(rootNode, null, null, -1, 1, 1);
+        rootNode = new Node(null, null, null, 0, 2, 0);
+        zeroNode = new Node(rootNode, null, null, 0, 1, 0);
+        escapeNode = new Node(rootNode, null, null, -1, 1, 1);
         rootNode.child[0] = zeroNode;
         rootNode.child[1] = escapeNode;
     }
 }
-
-/* */
