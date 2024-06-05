@@ -14,9 +14,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Level;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
-import vavi.util.Debug;
+import static java.lang.System.getLogger;
 
 
 /**
@@ -26,6 +27,8 @@ import vavi.util.Debug;
  * @see "http://oku.edu.mie-u.ac.jp/~okumura/compression/huffman/index.html"
  */
 public class Huffman {
+
+    private static final Logger logger = getLogger(Huffman.class.getName());
 
     /** size of alphabet (character = 0..N-1) */
     static final int N = 256;
@@ -78,46 +81,46 @@ public class Huffman {
 
     /** Encodes bytes */
     public byte[] encode(byte[] data) throws IOException {
-        boolean[] codeBit = new boolean[N]; // 符号語
+        boolean[] codeBit = new boolean[N]; // Codeword
 
         for (int i = 0; i < N; i++) {
-            freq[i] = 0; // 頻度の初期化
+            freq[i] = 0; // Frequency Initialization
         }
         for (byte b : data) {
-            freq[b & 0xff]++; // 頻度数え
+            freq[b & 0xff]++; // Frequency counting
         }
-        heap[1] = 0; // 長さ0のファイルに備える
+        heap[1] = 0; // Prepare for zero-length files
         heapSize = 0;
         for (int i = 0; i < N; i++) {
             if (freq[i] != 0) {
-                heap[++heapSize] = i; // 優先待ち行列に登録
+                heap[++heapSize] = i; // Join the priority queue
             }
         }
         for (int i = heapSize / 2; i >= 1; i--) {
-            downHeap(i); // ヒープ作り
+            downHeap(i); // Heap Creation
         }
-        int k = heap[1]; // 以下のループが1回も実行されない場合に備える
-        avail = N; // 以下のループでHuffman木を作る
-        while (heapSize > 1) { // 2個以上残りがある間
-            int i = heap[1]; // 最小の要素を取り出す
+        int k = heap[1]; // In case the following loop never executes
+        avail = N; // Create a Huffman tree using the following loop:
+        while (heapSize > 1) { // While there are 2 or more remaining
+            int i = heap[1]; // Take the smallest element
             heap[1] = heap[heapSize--];
-            downHeap(1); // ヒープ再構成
-            int j = heap[1]; // 次に最小の要素を取り出す
-            k = avail++; // 新しい節を生成する
-            freq[k] = freq[i] + freq[j]; // 頻度を合計
+            downHeap(1); // Heap Reorganization
+            int j = heap[1]; // Take the next smallest element
+            k = avail++; // Create a new section
+            freq[k] = freq[i] + freq[j]; // Sum the frequency
             heap[1] = k;
-            downHeap(1); // 待ち行列に登録
+            downHeap(1); // Join the queue
             parent[i] = k;
-            parent[j] = -k; // 木を作る
+            parent[j] = -k; // Make a tree
             left[k] = i;
             right[k] = j; // ditto
         }
         parent[k] = 0; // root
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BitOutputStream out = new BitOutputStream(baos);
-        out.putBits(BitOutputStream.MAX_BITS, freq[k]); // 入力ファイルのバイト数を出力
-        writeTree(out, k); // 木を出力
-int tableSize = out.outCount(); // 表の大きさ
+        out.putBits(BitOutputStream.MAX_BITS, freq[k]); // Output the number of bytes in the input file
+        writeTree(out, k); // Print the tree
+int tableSize = out.outCount(); // Table size
 int inCount = 0;
         for (byte b : data) {
             k = 0;
@@ -132,42 +135,42 @@ int inCount = 0;
             }
             while (--k >= 0) {
 //if (out.outCount() >= 0x7949) {
-//    Debug.println(Level.FINE, out.outCount() + "/" + data.length + ", " + (int) b + ", " + k); // 結果報告
+//    logger(Level.DEBUG, out.outCount() + "/" + data.length + ", " + (int) b + ", " + k); // Reporting the Results
 //}
                 out.putBit(codeBit[k]);
             }
-if (Debug.isLoggable(Level.FINE)) {
+if (logger.isLoggable(Level.DEBUG)) {
  if ((++inCount & 1023) == 0) {
-  System.err.print('.'); // 状況報告
+  System.err.print('.'); // Status Report
  }
 }
         }
-if (Debug.isLoggable(Level.FINE)) {
+if (logger.isLoggable(Level.DEBUG)) {
  System.err.println();
 }
-Debug.println(Level.FINE, "In : " + inCount + " bytes"); // 結果報告
-Debug.println(Level.FINE, "Out: " + out.outCount() + " bytes (table: " + tableSize + " bytes)");
-if (inCount != 0) { // 圧縮比を求めて報告
+logger.log(Level.DEBUG, "In : " + inCount + " bytes"); // Reporting the Results
+logger.log(Level.DEBUG, "Out: " + out.outCount() + " bytes (table: " + tableSize + " bytes)");
+if (inCount != 0) { // Determine and report compression ratio
  long cr = (1000L * out.outCount() + inCount / 2) / inCount;
- Debug.println(Level.FINE, "Out/In: " + (cr / 1000) + "." + (cr % 1000));
+ logger.log(Level.DEBUG, "Out/In: " + (cr / 1000) + "." + (cr % 1000));
 }
         out.flush();
         out.close();
         return baos.toByteArray();
     }
 
-    /** Huffman木を読む */
+    /** Reading Huffman trees */
     private int readTree(BitInputStream in) throws IOException {
-        if (in.getBit()) { // bit=1: 葉でない節
+        if (in.getBit()) { // bit=1: Non-leaf nodes
             int i;
             if ((i = avail++) >= 2 * N - 1) {
-                throw new IllegalStateException("表が間違っています");
+                throw new IllegalStateException("The table is incorrect");
             }
-            left[i] = readTree(in); // 左の枝を読む
-            right[i] = readTree(in); // 右の枝を読む
-            return i; // 節を返す
+            left[i] = readTree(in); // Read the left branch
+            right[i] = readTree(in); // Read the right branch
+            return i; // Return the clause
         } else
-            return in.getBits(8); // 文字
+            return in.getBits(8); // character
     }
 
     /** Decodes bytes */
@@ -184,7 +187,7 @@ if (inCount != 0) { // 圧縮比を求めて報告
     public void encode(InputStream is, OutputStream os) throws IOException {
         BufferedInputStream in = new BufferedInputStream(is);
         byte[] encoded = encode(toBytes(in));
-Debug.println("encoded: " + encoded.length + " bytes");
+logger.log(Level.DEBUG, "encoded: " + encoded.length + " bytes");
         os.write(encoded);
         os.flush();
     }
@@ -203,15 +206,15 @@ Debug.println("encoded: " + encoded.length + " bytes");
         return baos.toByteArray();
     }
 
-    /* 復号 */
+    /* Decryption */
     public void decode(InputStream is, OutputStream os) throws IOException {
         BitInputStream in = new BitInputStream(new BufferedInputStream(is));
         BufferedOutputStream out = new BufferedOutputStream(os);
-        int size = in.getBits(BitInputStream.MAX_BITS); // 元のバイト数
+        int size = in.getBits(BitInputStream.MAX_BITS); // Original number of bytes
         avail = N;
-        int root = readTree(in); // 木を読む
-        for (int k = 0; k < size; k++) { // 各文字を復号
-            int j = root; // 根
+        int root = readTree(in); // Reading Trees
+        for (int k = 0; k < size; k++) { // Decode each character
+            int j = root; // root
             while (j >= N) {
                 if (in.getBit()) {
                     j = right[j];
@@ -220,15 +223,15 @@ Debug.println("encoded: " + encoded.length + " bytes");
                 }
             }
             out.write(j);
-if (Debug.isLoggable(Level.FINE)) {
+if (logger.isLoggable(Level.DEBUG)) {
  if ((k & 1023) == 0)
   System.err.print('.');
 }
         }
-if (Debug.isLoggable(Level.FINE)) {
+if (logger.isLoggable(Level.DEBUG)) {
  System.err.println();
 }
-Debug.println(Level.FINE, "Out: " + size + " bytes"); // 復号したバイト数
+logger.log(Level.DEBUG, "Out: " + size + " bytes"); // Number of decrypted bytes
         out.flush();
     }
 }

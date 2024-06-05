@@ -131,5 +131,3 @@ Debug.println("actualDecoded2: " + Files.size(actualDecoded2) + "\n" + StringUti
             huf.decode(Files.newInputStream(Paths.get(args[1])), Files.newOutputStream(Paths.get(args[2]))); // 復号
     }
 }
-
-/* */

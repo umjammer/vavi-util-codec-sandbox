@@ -35,7 +35,6 @@ public class HuffmanInputStreamTest {
 "HTMLファイルなどはコンピュータが解析してレイアウトできるようにタグ(付加情報)が埋め込まれているが、タグ自体は通常の文字コードの範囲内で表現されているため、HTMLファイルもテキストファイルの一種と言える。" +
 "ただし、HTMLファイルはテキストエディタで開いたときとWebブラウザで開いたときに見え方がまったく異なるため、文章だけで構成されるファイルとは区別して扱う必要がある。";
 
-    /** */
     @Test
     public void test() throws Exception {
         final String encoding = "utf-8";
@@ -63,5 +62,3 @@ System.err.println("encoded: " + bais.available());
         assertEquals(text, sb.toString());
     }
 }
-
-/* */

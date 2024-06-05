@@ -69,5 +69,3 @@ public class HaarWavelet implements Wavelet {
         }
     }
 }
-
-/* */

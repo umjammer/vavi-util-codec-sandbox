@@ -62,7 +62,7 @@ System.err.print(new String(decoded, encoding));
         if (args.length != 0) {
             inFile = args[0];
         } else {
-            System.err.println("引数がありません");
+            System.err.println("Missing Arguments");
             System.exit(1);
         }
 
@@ -85,13 +85,13 @@ System.err.print(new String(decoded, encoding));
             HuffmanDecoder dec = new HuffmanDecoder();
             byte[] decoded = dec.decode(data);
 
-            // 結果出力
+            // Result output
             String outFile = inFile + ".dec";
             FileOutputStream fos = new FileOutputStream(outFile);
             fos.write(decoded, 0, decoded.length);
             fos.close();
         } catch (FileNotFoundException e) {
-            System.err.println("そんなファイルありません");
+            System.err.println("No such file");
             System.exit(1);
         } catch (IOException e) {
             e.printStackTrace(System.err);
@@ -99,5 +99,3 @@ System.err.print(new String(decoded, encoding));
         }
     }
 }
-
-/* */

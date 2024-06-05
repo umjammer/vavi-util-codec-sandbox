@@ -33,5 +33,3 @@ public interface Wavelet {
     /** */
     void doIWT_odd(int[] data, int skip);
 }
-
-/* */

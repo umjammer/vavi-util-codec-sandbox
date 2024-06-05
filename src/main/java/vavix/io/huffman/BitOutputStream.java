@@ -19,40 +19,40 @@ import java.io.OutputStream;
  */
 class BitOutputStream extends FilterOutputStream {
 
-    /** 書き込み可能な最大ビット数 */
+    /** Maximum number of bits that can be written */
     public static final int MAX_BITS = 31;
-    /** ビット出力カウンタ */
+    /** Bit Output Counter */
     protected int putCount = 8;
-    /** ビット出力バッファ */
+    /** Bit Output Buffer */
     protected int bitBuf = 0;
-    /** バイト出力カウンタ */
+    /** Byte Output Counter */
     protected int outCount = 0;
 
     /**
-     * コンストラクタ
+     * Constructor
      *
-     * @param out 出力ストリーム
+     * @param out Output Stream
      */
     public BitOutputStream(OutputStream out) {
         super(out);
     }
 
     /**
-     * 出力バイト数を返す
+     * Returns the number of output bytes
      */
     public int outCount() {
         return outCount;
     }
 
     /**
-     * x の右側 n ビットを返す
+     * Returns the right n bits of x
      */
     private static int rightBits(int n, int x) {
         return x & ((1 << n) - 1);
     }
 
     /**
-     * 1ビットを出力
+     * Output 1 bit
      */
     public void putBit(boolean bit) throws IOException {
         putCount--;
@@ -68,7 +68,7 @@ class BitOutputStream extends FilterOutputStream {
     }
 
     /**
-     * x の右側 n ビットを出力
+     * Output the right n bits of x
      */
     public void putBits(int n, int x) throws IOException {
         while (n >= putCount) {
@@ -86,6 +86,6 @@ class BitOutputStream extends FilterOutputStream {
     @Override
     public void close() throws IOException {
         putBits(7, 0);
-        super.close(); // バッファをフラッシュ
+        super.close(); // Flush the buffer
     }
 }

@@ -140,5 +140,3 @@ public class HuffmanDecoder {
         return infr;
     }
 }
-
-/* */

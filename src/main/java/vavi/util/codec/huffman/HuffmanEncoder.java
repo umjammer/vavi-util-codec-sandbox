@@ -237,5 +237,3 @@ System.err.println(prep + " -> " + postp + ": " + ((postp * 100) / prep) + "%");
         return minId;
     }
 }
-
-/* */

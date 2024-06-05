@@ -45,7 +45,7 @@ public class HuffmanEncoderTest {
         if (args.length != 0) {
             inFile = args[0];
         } else {
-            System.err.println("引数がありません");
+            System.err.println("Missing Arguments");
             System.exit(1);
         }
 
@@ -65,32 +65,31 @@ public class HuffmanEncoderTest {
 
             byte[] data = baos.toByteArray();
 
-/*
-// テスト出力
-int min = data[0], max = data[0];
-for (int i = 0; i < data.length; i++) {
- if (data[i] > max)
-  max = data[i];
- if (data[i] < min)
-  min = data[i];
- System.out.print(data[i] + " ");
- if (i % 16 == 0)
-  System.out.println();
-}
-System.out.println("size: " + data.length);
-System.out.println("max: " + max);
-System.out.println("min: " + min);
-*/
+// Test Output
+//int min = data[0], max = data[0];
+//for (int i = 0; i < data.length; i++) {
+// if (data[i] > max)
+//  max = data[i];
+// if (data[i] < min)
+//  min = data[i];
+// System.out.print(data[i] + " ");
+// if (i % 16 == 0)
+//  System.out.println();
+//}
+//System.out.println("size: " + data.length);
+//System.out.println("max: " + max);
+//System.out.println("min: " + min);
+
             HuffmanEncoder enc = new HuffmanEncoder();
             byte[] encoded = enc.encode(data);
 
-            // 結果出力
+            // Result output
             String outFile = inFile + ".hff";
             FileOutputStream fos = new FileOutputStream(outFile);
             fos.write(encoded, 0, encoded.length);
             fos.close();
         } catch (FileNotFoundException e) {
-            System.err.println("そんなファイルありません");
+            System.err.println("No such file");
             System.exit(1);
         } catch (IOException e) {
             e.printStackTrace(System.err);
@@ -98,5 +97,3 @@ System.out.println("min: " + min);
         }
     }
 }
-
-/* */
