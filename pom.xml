@@ -8,7 +8,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-util-codec-sandbox</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 
   <name>Vavi Codec Sandbox API</name>
   <organization>
