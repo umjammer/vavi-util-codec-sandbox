@@ -4,7 +4,7 @@
  * http://www.toblave.org/soundcompression/
  */
 
-package vavix.io.huffman1;
+package vavi.util.codec.huffman.eaglejones;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.io.OutputStream;
 /**
  * BitOutputStream.
  *
+ * @author Eagle Jones
  * @author <a href="mailto:sano-n@klab.org">Naohide Sano</a> (nsano)
  * @version 0.00 080516 nsano initial version <br>
  */
@@ -30,7 +31,7 @@ class BitOutputStream extends FilterOutputStream {
         super(_out);
     }
 
-    /** */
+    @Override
     public void flush() throws IOException {
         // if there's something in the buffer, just write it.
         if (bitsfree != 8) {
@@ -41,6 +42,7 @@ class BitOutputStream extends FilterOutputStream {
     }
 
     /** write a single byte - assume they want this byte-aligned... */
+    @Override
     public void write(int b) throws IOException {
         // if there's something in the buffer, just write it.
         if (bitsfree != 8) {
@@ -51,6 +53,7 @@ class BitOutputStream extends FilterOutputStream {
     }
 
     /** write an array of bytes - assume they want this byte-aligned... */
+    @Override
     public void write(byte[] b, int off, int len) throws IOException {
         // if there's something in the buffer, just write it.
         if (bitsfree != 8) {
@@ -70,5 +73,3 @@ class BitOutputStream extends FilterOutputStream {
         }
     }
 }
-
-/* */

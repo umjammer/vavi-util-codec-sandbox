@@ -4,7 +4,7 @@
  * Programmed by Tomonori Kusanagi
  */
 
-package vavi.util.codec.huffman;
+package vavi.util.codec.huffman.kusanagi;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -20,17 +20,18 @@ import java.io.IOException;
  *          2.00 031001 nsano refine <br>
  */
 public class HuffmanDecoder {
+
     /** */
     public byte[] decode(byte[] data) throws IOException {
         byte[] infr;
 
-        // Huffman 木用配列
+        // Huffman tree array
         int[] parent = new int[512];
         int[] l_node = new int[512];
         int[] r_node = new int[512];
         int[] freq = new int[512];
 
-        // 初期化
+        // Initialization
         for (int i = 0; i < 512; i++) {
             parent[i] = -1;
             l_node[i] = -1;
@@ -41,12 +42,12 @@ public class HuffmanDecoder {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         DataInputStream dis = new DataInputStream(bais);
 
-        // データ読み込み
+        // Data Import
 
-        // 符号情報タイプ
+        // Code Information Type
         int type = dis.readByte();
 
-        // 頻度配列
+        // Frequency array
         if (type == 0) {
             for (int i = 0; i < 256; i++) {
                 freq[i] = dis.readInt();
@@ -59,19 +60,19 @@ public class HuffmanDecoder {
             }
         }
 
-        // データ長
+        // Data Length
         int len = dis.readInt();
 
-        // Huffman 木を作る
-        // ハフマン木を作成
+        // Creating a Huffman Tree
+        // Create a Huffman tree
         int target;
 
-        // Huffman 木を作る
-        // ハフマン木を作成
+        // Creating a Huffman Tree
+        // Create a Huffman tree
         int min;
         for (int i = 256; i < (512 - 1); i++) {
             for (int j = 0; j < 2; j++) {
-                // 親のない要素で最小のものを探す→新しいノード
+                // Find the smallest element without a parent → new node
                 min = -1;
                 target = -1;
 
@@ -98,7 +99,7 @@ public class HuffmanDecoder {
             }
         }
 
-        // 解凍する
+        // Unzip
         infr = new byte[len];
 
         int curr_byte;
@@ -107,11 +108,11 @@ public class HuffmanDecoder {
         byte curr_bit;
 
         for (int i = 0; i < len; i++) {
-            target = 510; // 510(ルートノード)からスタート
+            target = 510; // Start from 510 (root node)
             while (true) {
-                // 対象ビットを得る
+                // Get the target bit
                 if ((rest_bits % 8) == 0) {
-                    // 1バイト読み込んでビットに分解
+                    // Read one byte and break it down into bits
                     curr_byte = dis.readByte();
                     for (int j = 0; j < 8; j++) {
                         bits[j] = (byte) (curr_byte % 2);
@@ -140,5 +141,3 @@ public class HuffmanDecoder {
         return infr;
     }
 }
-
-/* */

@@ -1,10 +1,10 @@
 /**
- * BitInputStream.java -- ビット入力ストリーム
+ * BitInputStream.java -- Bit Input Stream
  *
  * @version $Revision: 1.7 $, $Date: 2003/03/22 02:31:14 $
  */
 
-package vavix.io.huffman;
+package vavi.util.codec.huffman.okumura;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -12,38 +12,38 @@ import java.io.InputStream;
 
 
 /**
- * Huffman法などで使うビット入力ルーチンです。
+ * This is a bit input routine used in the Huffman method, etc.
  * 
  * @see BitOutputStream
  * @see Huffman
  */
 class BitInputStream extends FilterInputStream {
 
-    /** 読み込み可能な最大ビット数 */
+    /** Maximum number of bits that can be read */
     public static final int MAX_BITS = 31;
-    /** ビット入力カウンタ */
+    /** Bit Input Counter */
     protected int getCount = 0;
-    /** ビット入力バッファ */
+    /** Bit Input Buffer */
     protected int bitBuf = 0;
 
     /**
-     * コンストラクタ
+     * Constructor
      * 
-     * @param in 入力ストリーム
+     * @param in Input Stream
      */
     public BitInputStream(InputStream in) {
         super(in);
     }
 
     /**
-     * x の右側 n ビットを返す
+     * Returns the right n bits of x
      */
     private static int rightBits(int n, int x) {
         return x & ((1 << n) - 1);
     }
 
     /**
-     * 1ビットを読み込み
+     * Read 1 bit
      */
     public boolean getBit() throws IOException {
         if (--getCount >= 0) {
@@ -55,7 +55,7 @@ class BitInputStream extends FilterInputStream {
     }
 
     /**
-     * nビットを読み込み
+     * Read n bits
      */
     public int getBits(int n) throws IOException {
         int x = 0;

@@ -4,7 +4,7 @@
  * http://www.toblave.org/soundcompression/
  */
 
-package vavix.io.huffman1;
+package vavi.util.codec.huffman.eaglejones;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -13,65 +13,67 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-/** */
-class Symbol {
-    /** */
-    public Symbol(int sym, int len) {
-        symbol = sym;
-        length = len;
-    }
-
-    /** */
-    int symbol;
-
-    /** */
-    int length;
-}
-
-
-/** */
-class Node {
-    /** */
-    public Node(Node p, Node c1, Node c2, int n, int d, int c, int w) {
-        child = new Node[2];
-        parent = p;
-        child[0] = c1;
-        child[1] = c2;
-        code = n;
-        depth = d;
-        count = c;
-        which = w;
-    }
-
-    /** */
-    Node parent;
-
-    /** */
-    Node[] child;
-
-    /** */
-    int code;
-
-    /** */
-    int depth;
-
-    /** */
-    int count;
-
-    /** */
-    int which;
-}
-
-
 /**
  * HuffmanOutputStream. 
  *
+ * @author Eagle Jones
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080516 nsano initial version <br>
  */
 public class HuffmanOutputStream extends FilterOutputStream {
+
     /** */
-    private Map<Integer, Node> table;
+    static class Symbol {
+
+        /** */
+        public Symbol(int sym, int len) {
+            symbol = sym;
+            length = len;
+        }
+
+        /** */
+        int symbol;
+
+        /** */
+        int length;
+    }
+
+    /** */
+    static class Node {
+
+        /** */
+        public Node(Node p, Node c1, Node c2, int n, int d, int c, int w) {
+            child = new Node[2];
+            parent = p;
+            child[0] = c1;
+            child[1] = c2;
+            code = n;
+            depth = d;
+            count = c;
+            which = w;
+        }
+
+        /** */
+        Node parent;
+
+        /** */
+        Node[] child;
+
+        /** */
+        int code;
+
+        /** */
+        int depth;
+
+        /** */
+        int count;
+
+        /** */
+        int which;
+    }
+
+    /** */
+    private final Map<Integer, Node> table;
 
     /** */
     private Node rootNode;
@@ -98,7 +100,7 @@ public class HuffmanOutputStream extends FilterOutputStream {
     }
 
     /** */
-    private void docodes(Node n) {
+    private static void docodes(Node n) {
         if (n != null) {
             n.depth = n.parent.depth + 1;
             n.code = ((n.parent.code) << 1) + n.which;
@@ -108,7 +110,7 @@ public class HuffmanOutputStream extends FilterOutputStream {
     }
 
     /** */
-    private void swap(Node a, Node b) {
+    private static void swap(Node a, Node b) {
         a.parent.child[a.which] = b;
         b.parent.child[b.which] = a;
 
@@ -138,7 +140,7 @@ public class HuffmanOutputStream extends FilterOutputStream {
         }
     }
 
-    /** */
+    @Override
     public void flush() throws IOException {
         bos.flush();
     }
@@ -179,5 +181,3 @@ public class HuffmanOutputStream extends FilterOutputStream {
         rootNode.child[1] = escapeNode;
     }
 }
-
-/* */

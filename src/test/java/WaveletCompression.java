@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import vavix.io.huffman1.HuffmanInputStream;
-import vavix.io.huffman1.HuffmanOutputStream;
+import vavi.util.codec.huffman.eaglejones.HuffmanInputStream;
+import vavi.util.codec.huffman.eaglejones.HuffmanOutputStream;
 
 
 class WaveletCompression {
@@ -101,5 +101,3 @@ class WaveletCompression {
         }
     }
 }
-
-/* */
