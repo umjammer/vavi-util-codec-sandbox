@@ -1,10 +1,10 @@
 /**
- * BitInputStream.java -- ビット入力ストリーム
+ * BitInputStream.java -- Bit Input Stream
  *
  * @version $Revision: 1.7 $, $Date: 2003/03/22 02:31:14 $
  */
 
-package vavix.io.huffman;
+package vavi.util.codec.huffman.okumura;
 
 import java.io.FilterInputStream;
 import java.io.IOException;

@@ -1,10 +1,10 @@
 /**
- * BitOutputStream.java -- ビット出力ストリーム
+ * BitOutputStream.java -- Bit Output Stream
  *
  * @version $Revision: 1.7 $, $Date: 2003/03/22 02:31:14 $
  */
 
-package vavix.io.huffman;
+package vavi.util.codec.huffman.okumura;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.OutputStream;
 
 
 /**
- * Huffman法などで使うビット出力ルーチンです。
+ * This is a bit output routine used in the Huffman algorithm, etc.
  *
  * @see BitInputStream
  * @see Huffman

@@ -5,12 +5,13 @@
  * BitInputStream, BitOutputStreamを使う
  */
 
-package vavix.io.huffman;
+package vavi.util.codec.huffman.okumura;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -135,24 +136,24 @@ int inCount = 0;
             }
             while (--k >= 0) {
 //if (out.outCount() >= 0x7949) {
-//    logger(Level.DEBUG, out.outCount() + "/" + data.length + ", " + (int) b + ", " + k); // Reporting the Results
+// logger(Level.TRACE, out.outCount() + "/" + data.length + ", " + (int) b + ", " + k); // Reporting the Results
 //}
                 out.putBit(codeBit[k]);
             }
-if (logger.isLoggable(Level.DEBUG)) {
+if (logger.isLoggable(Level.TRACE)) {
  if ((++inCount & 1023) == 0) {
   System.err.print('.'); // Status Report
  }
 }
         }
-if (logger.isLoggable(Level.DEBUG)) {
+if (logger.isLoggable(Level.TRACE)) {
  System.err.println();
 }
-logger.log(Level.DEBUG, "In : " + inCount + " bytes"); // Reporting the Results
-logger.log(Level.DEBUG, "Out: " + out.outCount() + " bytes (table: " + tableSize + " bytes)");
+logger.log(Level.TRACE, "In : " + inCount + " bytes"); // Reporting the Results
+logger.log(Level.TRACE, "Out: " + out.outCount() + " bytes (table: " + tableSize + " bytes)");
 if (inCount != 0) { // Determine and report compression ratio
  long cr = (1000L * out.outCount() + inCount / 2) / inCount;
- logger.log(Level.DEBUG, "Out/In: " + (cr / 1000) + "." + (cr % 1000));
+ logger.log(Level.TRACE, "Out/In: " + (cr / 1000) + "." + (cr % 1000));
 }
         out.flush();
         out.close();
@@ -192,7 +193,7 @@ logger.log(Level.DEBUG, "encoded: " + encoded.length + " bytes");
         os.flush();
     }
 
-    /** */
+    /** for encode */
     private static byte[] toBytes(InputStream in) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buf = new byte[8192];
@@ -206,11 +207,42 @@ logger.log(Level.DEBUG, "encoded: " + encoded.length + " bytes");
         return baos.toByteArray();
     }
 
+    /** */
+    public static class HuffmanOutputStream extends OutputStream {
+        private final OutputStream out;
+        private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        private final Huffman huffman = new Huffman();
+        public HuffmanOutputStream(OutputStream out) {
+            this.out = out;
+        }
+
+        @Override public void write(int b) throws IOException {
+            baos.write(b);
+        }
+
+        @Override public void flush() throws IOException {
+logger.log(Level.TRACE, "flush: " + baos.size());
+            baos.flush();
+            byte[] encoded = huffman.encode(baos.toByteArray());
+            baos.reset();
+            out.write(encoded);
+            out.flush();
+        }
+
+        @Override public void close() throws IOException {
+logger.log(Level.TRACE, "close: " + baos.size());
+            flush();
+            baos.close();
+            this.out.close();
+        }
+    }
+
     /* Decryption */
     public void decode(InputStream is, OutputStream os) throws IOException {
         BitInputStream in = new BitInputStream(new BufferedInputStream(is));
         BufferedOutputStream out = new BufferedOutputStream(os);
         int size = in.getBits(BitInputStream.MAX_BITS); // Original number of bytes
+logger.log(Level.TRACE, "decode: %1$d (%1$04x) bytes".formatted(size));
         avail = N;
         int root = readTree(in); // Reading Trees
         for (int k = 0; k < size; k++) { // Decode each character
@@ -233,5 +265,50 @@ if (logger.isLoggable(Level.DEBUG)) {
 }
 logger.log(Level.DEBUG, "Out: " + size + " bytes"); // Number of decrypted bytes
         out.flush();
+    }
+
+    /** */
+    public static class HuffmanInputStream extends FilterInputStream {
+        private final Huffman huffman;
+        private int size;
+        private final int root;
+        private BitInputStream in() {
+            return (BitInputStream) this.in;
+        }
+        public HuffmanInputStream(InputStream in) throws IOException {
+            super(new BitInputStream(in));
+            size = in().getBits(BitInputStream.MAX_BITS); // Original number of bytes
+            huffman = new Huffman();
+            huffman.avail = N;
+            root = huffman.readTree(in()); // Reading Trees
+        }
+        @Override public int available() throws IOException {
+            return size;
+        }
+        @Override public int read(byte[] b, int ofs, int len) throws IOException {
+            int i = 0;
+            for (; i < len; i++) {
+                int r = read();
+//logger.log(Level.DEBUG, "%02x".formatted(r));
+                if (r == -1) break;
+                b[ofs + i] = (byte) r;
+            }
+            return i > 0 ? i : -1;
+        }
+        @Override public int read() throws IOException {
+            if (size == 0) return -1;
+
+            int value = root; // root
+            while (value >= N) {
+                if (in().getBit()) {
+                    value = huffman.right[value];
+                } else {
+                    value = huffman.left[value];
+                }
+            }
+            size--;
+//logger.log(Level.DEBUG, "%1$d, %2$02x, %2$c".formatted(size, value));
+            return value;
+        }
     }
 }

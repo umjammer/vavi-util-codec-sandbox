@@ -4,7 +4,7 @@
  * http://www.toblave.org/soundcompression/
  */
 
-package vavix.io.huffman1;
+package vavi.util.codec.huffman.eaglejones;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import java.util.Map;
 /**
  * HuffmanOutputStream. 
  *
+ * @author Eagle Jones
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080516 nsano initial version <br>
  */

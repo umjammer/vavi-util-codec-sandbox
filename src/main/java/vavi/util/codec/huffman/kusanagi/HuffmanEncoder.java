@@ -4,7 +4,7 @@
  * Programmed by Tomonori Kusanagi
  */
 
-package vavi.util.codec.huffman;
+package vavi.util.codec.huffman.kusanagi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -21,12 +21,12 @@ import java.io.IOException;
  */
 public class HuffmanEncoder {
     /**
-     * ハフマン符号化する
+     * Huffman encoding
      */
     public byte[] encode(byte[] data) throws IOException {
         int[] freq = new int[256];
 
-        // 頻度配列
+        // Frequency array
         for (int i = 0; i < 256; i++) {
             freq[i] = 0;
         }
@@ -34,24 +34,24 @@ public class HuffmanEncoder {
             freq[b + 128]++;
         }
 
-// テスト出力
+// Test Output
 //for (int i = 0; i < 256; i++) {
 // System.out.print(freq[i] + " ");
 // if (i % 16 == 15)
 //  System.out.println();
 //}
 
-        // ハフマン木を作成
+        // Create a Huffman tree
         int[] parent = new int[512];
         int[] l_node = new int[512];
         int[] r_node = new int[512];
         buildTree(freq, parent, l_node, r_node);
 
-// テスト出力
+// Test Output
 //for (int i = 0; i < 512 - 1; i++)
 // System.out.println("[" + i + "] l:" + l_node[i] + " r:" + r_node[i] + " p:" + parent[i]);
 
-        // 符号を作成
+        // Create a code
         int n;
         byte[][] code = new byte[256][];
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -60,7 +60,7 @@ public class HuffmanEncoder {
                 continue;
             }
 
-            // 初期化
+            // Initialization
             n = i;
             baos.reset();
             while (parent[n] != -1) {
@@ -75,13 +75,13 @@ public class HuffmanEncoder {
             byte[] rev_code = baos.toByteArray();
             code[i] = new byte[rev_code.length];
 
-            // 反転
+            // Invert
             for (int j = 0; j < rev_code.length; j++) {
                 code[i][j] = rev_code[rev_code.length - j - 1];
             }
         }
 
-// テスト出力
+// Test Output
 //for (int i = 0; i < 256; i++) {
 // System.out.print("["+i+"]:"+freq[i]+" - ");
 // if (freq[i] > 0) {
@@ -92,7 +92,7 @@ public class HuffmanEncoder {
 // System.out.println();
 //}
 
-        // 符号を得る
+        // Get the sign
         baos.reset();
 
         for (byte datum : data) {
@@ -107,7 +107,7 @@ public class HuffmanEncoder {
 
         byte[] huff = new byte[(tmp.length / 8) + 1];
         for (int i = 0; i < huff.length; i++) {
-            // 符号化バイト列作成
+            // Create encoded byte sequence
             huff[i] = 0;
             for (int j = 0; j < 8; j++) {
                 huff[i] = (byte) (huff[i] << 1);
@@ -121,15 +121,15 @@ public class HuffmanEncoder {
 
         DataOutputStream dos = new DataOutputStream(baos);
 
-        // 符号化情報
-        // type 0：
-        //     全要素の出現頻度をint型でもつ
+        // Encoding information
+        // type 0:
+        //  Contains the occurrence frequency of all elements in int type
         //   4[byte] * 256 = 1024[byte]
-        // type 1：
-        //     出現頻度が0でない要素だけについて、
-        //   要素番号と出現頻度（int型）をもつ
+        // type 1:
+        //  Contains the element number and occurrence frequency (int type)
+        //  for only elements with a non-zero occurrence frequency
         //   1[byte] + (1+4)[byte] * 256
-        // type 1の場合の符号化情報データ量
+        // Encoding information data volume for type 1
         n = 0;
         for (int i = 0; i < 256; i++) {
             if (freq[i] != 0) {
@@ -137,7 +137,7 @@ public class HuffmanEncoder {
             }
         }
 
-        // データが少なくてすむ方を自動的に選ぶ
+        // Automatically choose the option that requires less data
         int type;
         if ((1 + (n * 5)) > (256 * 4)) {
             type = 0;
@@ -147,7 +147,7 @@ public class HuffmanEncoder {
 
 //System.out.println("type : " + type);
         if (type == 0) {
-            dos.writeByte(0); // 符号情報タイプ
+            dos.writeByte(0); // Code Information Type
             for (int i = 0; i < 256; i++) {
                 dos.writeInt(freq[i]);
             }
@@ -161,20 +161,20 @@ public class HuffmanEncoder {
                 }
             }
         } else {
-            throw new IllegalArgumentException("符号化情報番号: " + type);
+            throw new IllegalArgumentException("Encoding information number: " + type);
         }
 
-        // 文字数
+        // Number of characters
         dos.writeInt(data.length);
 
-        // 符号化データ
+        // Encoded Data
         dos.write(huff, 0, huff.length);
 
         dos.close();
 
         byte[] out = baos.toByteArray();
 
-        // テスト出力
+        // Test Output
         int prep = data.length;
         int postp = out.length;
 System.err.println(prep + " -> " + postp + ": " + ((postp * 100) / prep) + "%");
@@ -183,12 +183,12 @@ System.err.println(prep + " -> " + postp + ": " + ((postp * 100) / prep) + "%");
     }
 
     /**
-     * Huffman木をつくる
+     * Creating a Huffman tree
      */
     private static void buildTree(int[] freq, int[] parent, int[] l_node, int[] r_node) {
         int[] freq_node = new int[512];
 
-        // 初期化
+        // Initialization
         for (int i = 0; i < 512; i++) {
             parent[i] = -1;
             l_node[i] = -1;
@@ -200,16 +200,16 @@ System.err.println(prep + " -> " + postp + ": " + ((postp * 100) / prep) + "%");
             }
         }
 
-        // Huffman木を作成
+        // Create a Huffman tree
         int minId;
         for (int i = 256; i < (512 - 1); i++) {
-            // 親のない要素で最小のものを探す→新しい左ノード
+            // Find the smallest element without a parent → new left node
             minId = findSmallest(i, freq_node, parent);
             l_node[i] = minId;
             parent[minId] = -i;
             freq_node[i] = freq_node[minId];
 
-            // 親のない要素で最小のものを探す→新しい右ノード
+            // Find the smallest element without a parent → new right node
             minId = findSmallest(i, freq_node, parent);
             r_node[i] = minId;
             parent[minId] = i;
@@ -218,7 +218,7 @@ System.err.println(prep + " -> " + postp + ": " + ((postp * 100) / prep) + "%");
     }
 
     /**
-     * 配列の親を持たない要素の中で最小のものを探し、その番号を返す
+     * Finds the smallest orphaned element in an array and returns its index.
      */
     private static int findSmallest(int n, int[] freq_node, int[] parent) {
         int min = -1;
