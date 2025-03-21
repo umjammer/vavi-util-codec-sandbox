@@ -37,19 +37,19 @@ public class Huffman {
     private int heapSize, avail;
 
     /** heap for queue */
-    private int[] heap = new int[2 * N - 1];
+    private final int[] heap = new int[2 * N - 1];
 
     /** data structure of Huffman tree */
-    private int[] parent = new int[2 * N - 1];
+    private final int[] parent = new int[2 * N - 1];
 
     /** ditto */
-    private int[] left = new int[2 * N - 1];
+    private final int[] left = new int[2 * N - 1];
 
     /** ditto */
-    private int[] right = new int[2 * N - 1];
+    private final int[] right = new int[2 * N - 1];
 
     /** letter frequency */
-    private int[] freq = new int[2 * N - 1];
+    private final int[] freq = new int[2 * N - 1];
 
     /** insert primary queue */
     private void downHeap(int i) {
@@ -82,6 +82,11 @@ public class Huffman {
 
     /** Encodes bytes */
     public byte[] encode(byte[] data) throws IOException {
+        return encode(data, BitOutputStream.MAX_BITS);
+    }
+
+    /** Encodes bytes */
+    public byte[] encode(byte[] data, int lengthBits) throws IOException {
         boolean[] codeBit = new boolean[N]; // Codeword
 
         for (int i = 0; i < N; i++) {
@@ -119,7 +124,7 @@ public class Huffman {
         parent[k] = 0; // root
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BitOutputStream out = new BitOutputStream(baos);
-        out.putBits(BitOutputStream.MAX_BITS, freq[k]); // Output the number of bytes in the input file
+        out.putBits(lengthBits, freq[k]); // Output the number of bytes in the input file
         writeTree(out, k); // Print the tree
 int tableSize = out.outCount(); // Table size
 int inCount = 0;
@@ -207,31 +212,40 @@ logger.log(Level.DEBUG, "encoded: " + encoded.length + " bytes");
         return baos.toByteArray();
     }
 
-    /** */
+    /** Must flush or close. */
     public static class HuffmanOutputStream extends OutputStream {
         private final OutputStream out;
         private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         private final Huffman huffman = new Huffman();
+        private final int lengthBits;
+        private boolean flushed = false;
+
         public HuffmanOutputStream(OutputStream out) {
+            this(out, BitInputStream.MAX_BITS);
+        }
+        public HuffmanOutputStream(OutputStream out, int lengthBits) {
             this.out = out;
+            this.lengthBits = lengthBits;
         }
 
         @Override public void write(int b) throws IOException {
             baos.write(b);
+            flushed = false;
         }
 
         @Override public void flush() throws IOException {
 logger.log(Level.TRACE, "flush: " + baos.size());
             baos.flush();
-            byte[] encoded = huffman.encode(baos.toByteArray());
+            byte[] encoded = huffman.encode(baos.toByteArray(), lengthBits);
             baos.reset();
             out.write(encoded);
             out.flush();
+            flushed = true;
         }
 
         @Override public void close() throws IOException {
 logger.log(Level.TRACE, "close: " + baos.size());
-            flush();
+            if (!flushed) flush();
             baos.close();
             this.out.close();
         }
@@ -239,9 +253,15 @@ logger.log(Level.TRACE, "close: " + baos.size());
 
     /* Decryption */
     public void decode(InputStream is, OutputStream os) throws IOException {
+        decode(is, os, BitInputStream.MAX_BITS);
+    }
+
+    /* Decryption */
+    public void decode(InputStream is, OutputStream os, int lengthBits) throws IOException {
         BitInputStream in = new BitInputStream(new BufferedInputStream(is));
         BufferedOutputStream out = new BufferedOutputStream(os);
-        int size = in.getBits(BitInputStream.MAX_BITS); // Original number of bytes
+        int size = in.getBits(lengthBits); // Original number of bytes
+        if (lengthBits == 32) size &= 0xefff_ffff;
 logger.log(Level.TRACE, "decode: %1$d (%1$04x) bytes".formatted(size));
         avail = N;
         int root = readTree(in); // Reading Trees
@@ -258,6 +278,8 @@ logger.log(Level.TRACE, "decode: %1$d (%1$04x) bytes".formatted(size));
 if (logger.isLoggable(Level.DEBUG)) {
  if ((k & 1023) == 0)
   System.err.print('.');
+ if ((k % (1024 * 80)) == 0)
+  System.err.println();
 }
         }
 if (logger.isLoggable(Level.DEBUG)) {
@@ -276,8 +298,12 @@ logger.log(Level.DEBUG, "Out: " + size + " bytes"); // Number of decrypted bytes
             return (BitInputStream) this.in;
         }
         public HuffmanInputStream(InputStream in) throws IOException {
+            this(in, BitInputStream.MAX_BITS);
+        }
+        public HuffmanInputStream(InputStream in, int lengthBits) throws IOException {
             super(new BitInputStream(in));
-            size = in().getBits(BitInputStream.MAX_BITS); // Original number of bytes
+            size = in().getBits(lengthBits); // Original number of bytes
+            if (lengthBits == 32) size &= 0xefff_ffff;
             huffman = new Huffman();
             huffman.avail = N;
             root = huffman.readTree(in()); // Reading Trees

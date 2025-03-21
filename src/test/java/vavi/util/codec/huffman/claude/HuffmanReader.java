@@ -13,6 +13,7 @@ import static java.lang.System.getLogger;
 
 
 /**
+ * this is equivalent for {@code vavi.util.codec.hufman.okumura} when lengthBits is 32
  * @see "https://claude.ai/chat/edc33e58-38f7-4ace-9e13-2012cbb02de6"
  */
 public class HuffmanReader extends InputStream {
@@ -48,7 +49,7 @@ public class HuffmanReader extends InputStream {
                 return i; // return node
             } else {
                 byte value = reader.readUint8();
-                return value & 0xFF; // return leaf
+                return value & 0xff; // return leaf
             }
         }
 
@@ -141,6 +142,6 @@ logger.log(Level.TRACE, "size: %04x".formatted(size));
             return -1;
         }
 
-        return oneByte[0] & 0xFF;
+        return oneByte[0] & 0xff;
     }
 }

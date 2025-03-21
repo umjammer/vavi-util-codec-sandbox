@@ -2,8 +2,6 @@ package vavi.util.codec.huffman.claude;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 
 /**
@@ -48,7 +46,7 @@ public class BitReader {
         }
         byte buf2 = (byte) readResult;
         
-        byte result = (byte) ((buf & 0xFF) | ((buf2 & 0xFF) >> rest));
+        byte result = (byte) ((buf & 0xff) | ((buf2 & 0xff) >> rest));
         buf = (byte) (buf2 << (8 - rest));
         return result;
     }
