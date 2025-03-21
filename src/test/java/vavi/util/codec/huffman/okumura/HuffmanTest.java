@@ -117,9 +117,9 @@ Debug.println("decoded: " + Files.size(decoded));
     @Test
     @DisplayName("binary")
     void test3() throws Exception {
-        Path original = Paths.get("src/test/resources/data.enc");
+        Path original = Paths.get("src/test/resources/okumura/data.enc");
 Debug.println("original: " + Files.size(original) + "\n" + StringUtil.getDump(new BufferedInputStream(Files.newInputStream(original)), 0, 64));
-        Path expectedDecoded = Paths.get("src/test/resources/data.dec");
+        Path expectedDecoded = Paths.get("src/test/resources/okumura/data.dec");
         Path actualDecoded = tmp.resolve("test3.dec");
         Huffman decoder = new Huffman();
         OutputStream os = Files.newOutputStream(actualDecoded);
@@ -168,6 +168,26 @@ Debug.printf("%d -> %d: %d%%", Files.size(file), Files.size(encoded), (int) (Fil
         Files.copy(new Huffman.HuffmanInputStream(new BufferedInputStream(Files.newInputStream(encoded))), decoded, REPLACE_EXISTING);
 Debug.println("decoded: " + Files.size(decoded));
         assertEquals(Checksum.getChecksum(file), Checksum.getChecksum(decoded));
+    }
+
+    @Test
+    @DisplayName("when lengthBits is 32")
+    void test5() throws Exception {
+        Path in = Path.of(HuffmanTest.class.getResource("/claude/data.enc").toURI());
+        byte[] b = new Huffman.HuffmanInputStream(Files.newInputStream(in), 32).readAllBytes();
+        Path out = Path.of("tmp/okumura.dec");
+        Files.write(out, b);
+Debug.printf("%d -> %d: %d%%\n%s", Files.size(in), b.length, (int) (Files.size(in) * 100f / b.length), StringUtil.getDump(b, 128));
+        Path expected = Path.of(HuffmanTest.class.getResource("/claude/data.dec").toURI());
+        assertEquals(Checksum.getChecksum(expected), Checksum.getChecksum(out));
+        Path out2 = Path.of("tmp/okumura.enc");
+        var os = new Huffman.HuffmanOutputStream(Files.newOutputStream(out2), 32);
+        os.write(b);
+        os.flush();
+        os.close();
+Debug.printf("%d -> %d: %d%%\n%s", b.length, Files.size(out2), (int) (Files.size(out2) * 100f / b.length), StringUtil.getDump(b, 128));
+        Path expected2 = Path.of(HuffmanTest.class.getResource("/claude/data.enc").toURI());
+        assertEquals(Checksum.getChecksum(expected2), Checksum.getChecksum(out2));
     }
 
     /**

@@ -9,6 +9,10 @@ package vavi.util.codec.huffman.okumura;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -18,6 +22,8 @@ import java.io.OutputStream;
  * @see Huffman
  */
 class BitOutputStream extends FilterOutputStream {
+
+    private static final Logger logger = getLogger(BitOutputStream.class.getName());
 
     /** Maximum number of bits that can be written */
     public static final int MAX_BITS = 31;
@@ -85,6 +91,7 @@ class BitOutputStream extends FilterOutputStream {
 
     @Override
     public void close() throws IOException {
+logger.log(Level.TRACE, "outCount: " + outCount);
         putBits(7, 0);
         super.close(); // Flush the buffer
     }

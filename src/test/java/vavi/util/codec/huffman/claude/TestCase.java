@@ -9,9 +9,11 @@ package vavi.util.codec.huffman.claude;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import vavi.util.Debug;
 import vavi.util.StringUtil;
+import vavix.util.Checksum;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -23,10 +25,13 @@ import vavi.util.StringUtil;
 class TestCase {
 
     @Test
-    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test1() throws Exception {
-        Path path = Path.of("/Users/nsano/src/vavi/vavi-sound/tmp/data.enc");
-        byte[] b = new HuffmanReader(Files.newInputStream(path)).readAllBytes();
-Debug.printf("%d -> %d: %d%%\n%s", Files.size(path), b.length, (int) (Files.size(path) * 100f / b.length), StringUtil.getDump(b, 128));
+        Path in = Path.of(TestCase.class.getResource("/claude/data.enc").toURI());
+        byte[] b = new HuffmanReader(Files.newInputStream(in)).readAllBytes();
+        Path out = Path.of("tmp/claude.dec");
+        Files.write(out, b);
+Debug.printf("%d -> %d: %d%%\n%s", Files.size(in), b.length, (int) (Files.size(in) * 100f / b.length), StringUtil.getDump(b, 128));
+        Path expected = Path.of(TestCase.class.getResource("/claude/data.dec").toURI());
+        assertEquals(Checksum.getChecksum(expected), Checksum.getChecksum(out));
     }
 }
