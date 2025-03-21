@@ -19,10 +19,11 @@
 
 ## TODO
 
- * huffman okumura
+ * huffman:okumura
    * some binary doesn't pass unit test
-   * doesn't work for smaf compression
- * eaglejones
+   * ~~doesn't work for smaf compression~~
+ * huffman:eaglejones
    * test is wrong
  * lznt1
    * lost by disk crash
+   * https://github.com/umjammer/vavi-nio-file-discutils/blob/main/src/main/java/discUtils/ntfs/LZNT1.java
